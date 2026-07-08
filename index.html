@@ -16,7 +16,7 @@
         /* L'AREA DI SCROLL: crea lo spazio per poter scrollare, 
            ma non contiene nulla di visibile. */
         .scroll-area {
-            height: 5000px; /* Più è lungo, più lentamente si disegna la linea */
+            height: 8000px; /* Più è lungo, più lentamente si disegna la linea */
         }
 
         /* IL VIEWPORT FISSO: La nostra "Telecamera" che non si muove mai */
@@ -68,9 +68,9 @@
             position: absolute;
             top: 0;
             left: 50%;
-            margin-left: -1000px; /* Centra una tela gigantesca da 2000px */
+            margin-left: -1000px; 
             width: 2000px;
-            height: 3000px;
+            height: 6000px; /* Tela allungata a 6000px per ospitare tutti i gradini */
         }
 
         /* La traccia animata è isolata dal filtro! */
@@ -138,22 +138,28 @@
                 </svg>
             </div>
             
-            <svg class="line-svg animated-line-container" viewBox="0 0 2000 3000">
+            <svg class="line-svg animated-line-container" viewBox="0 0 2000 6000">
                 <path id="animatedLine" d="
                     M 1000 150 
-                    V 400 
-                    A 80 80 0 0 0 1080 480 
-                    H 1800 
-                    A 80 80 0 0 1 1880 560 
-                    V 1000 
-                    A 80 80 0 0 1 1800 1080 
-                    H 200 
-                    A 80 80 0 0 0 120 1160 
-                    V 1600
-                    A 80 80 0 0 0 200 1680
-                    H 1000
-                    A 80 80 0 0 1 1080 1760
-                    V 3000" 
+                    V 400 A 80 80 0 0 0 920 480 
+                    H 500 A 80 80 0 0 0 420 560 
+                    V 900 A 80 80 0 0 0 500 980 
+                    H 1500 A 80 80 0 0 1 1580 1060 
+                    V 1500 A 80 80 0 0 1 1500 1580 
+                    H 1000 A 80 80 0 0 0 920 1660 
+                    V 2000 A 80 80 0 0 0 1000 2080 
+                    H 1400 A 80 80 0 0 1 1480 2160 
+                    V 2600 A 80 80 0 0 1 1400 2680 
+                    H 300 A 80 80 0 0 0 220 2760 
+                    V 3300 A 80 80 0 0 0 300 3380 
+                    H 700 A 80 80 0 0 1 780 3460 
+                    V 4000 A 80 80 0 0 1 700 4080 
+                    H 200 A 80 80 0 0 0 120 4160 
+                    V 4600 A 80 80 0 0 0 200 4680 
+                    H 1300 A 80 80 0 0 1 1380 4760 
+                    V 5200 A 80 80 0 0 1 1300 5280
+                    H 600 A 80 80 0 0 0 520 5360
+                    V 6000" 
                 />
             </svg>
         </div>
