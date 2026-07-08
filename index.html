@@ -41,13 +41,14 @@
             will-change: transform;
         }
 
-        /* IL GRUPPO (Ripristiniamo il filtro per fondere blob e traccia) */
+        /* IL GRUPPO (Solo per il blob e il pezzettino iniziale) */
         .gooey-group {
             position: relative;
             filter: url('#goo'); 
+            z-index: 2; /* Sta sopra la linea animata per nascondere la giuntura */
         }
 
-        /* IL BLOB ORGANICO (Senza ombra per permettere la fusione) */
+        /* IL BLOB (Centrato assoluto) */
         .blob {
             position: absolute;
             width: 150px;  
@@ -55,11 +56,34 @@
             background: #f05a28;
             
             top: 150px;
-            left: 400px;
+            left: 50%;
             margin-top: -75px; 
             margin-left: -75px; 
             
             animation: morph 8s ease-in-out infinite, spin 20s linear infinite;
+        }
+
+        /* LE TELE SVG (Larghissime per toccare i bordi dello schermo) */
+        .line-svg {
+            position: absolute;
+            top: 0;
+            left: 50%;
+            margin-left: -1000px; /* Centra una tela gigantesca da 2000px */
+            width: 2000px;
+            height: 3000px;
+        }
+
+        /* La traccia animata è isolata dal filtro! */
+        .animated-line-container {
+            z-index: 1;
+        }
+
+        path {
+            stroke: #f05a28;
+            stroke-width: 30; 
+            fill: none;
+            stroke-linecap: butt; 
+            stroke-linejoin: miter; 
         }
 
         /* Keyframes espansi: molti più punti di ancoraggio per un movimento liquido complesso */
@@ -122,24 +146,29 @@
             <div class="gooey-group">
                 <div class="blob"></div>
                 
-                <svg class="line-svg" viewBox="0 0 800 2500">
-                    <path id="animatedLine" d="
-                        M 400 150 
-                        V 400 
-                        A 80 80 0 0 0 480 480 
-                        H 700 
-                        A 80 80 0 0 1 780 560 
-                        V 1000 
-                        A 80 80 0 0 1 700 1080 
-                        H 100 
-                        A 80 80 0 0 0 20 1160 
-                        V 1600
-                        A 80 80 0 0 0 100 1680
-                        H 320
-                        A 80 80 0 0 1 400 1760
-                        V 2500" 
-                    />
+                <svg class="line-svg" viewBox="0 0 2000 3000">
+                    <path d="M 1000 150 V 250" />
                 </svg>
+            </div>
+            
+            <svg class="line-svg animated-line-container" viewBox="0 0 2000 3000">
+                <path id="animatedLine" d="
+                    M 1000 150 
+                    V 400 
+                    A 80 80 0 0 0 1080 480 
+                    H 1800 
+                    A 80 80 0 0 1 1880 560 
+                    V 1000 
+                    A 80 80 0 0 1 1800 1080 
+                    H 200 
+                    A 80 80 0 0 0 120 1160 
+                    V 1600
+                    A 80 80 0 0 0 200 1680
+                    H 1000
+                    A 80 80 0 0 1 1080 1760
+                    V 3000" 
+                />
+            </svg>
             </div>
             
         </div>
@@ -179,8 +208,6 @@
         function updateCamera(progress) {
             const drawLength = progress * pathLength;
             
-            // Applichiamo la curva di Bezier all'animazione del tracciato
-            // Ora non è più pedissequo, ma "accelera e decelera" (ease)
             gsap.to(path, { 
                 strokeDashoffset: pathLength - drawLength, 
                 ease: "power2.out", 
@@ -189,10 +216,14 @@
 
             const point = path.getPointAtLength(drawLength);
 
-            const cameraX = (window.innerWidth * 0.5) - 400; 
-            const cameraY = (window.innerHeight * 0.33) - point.y;
+            // MAGIA DEL CENTRAMENTO:
+            // Da scroll zero al 5%, la telecamera passa fluidamente dal 50% dell'altezza schermo al 33%.
+            const targetRatioY = progress < 0.05 ? 0.5 - (progress / 0.05) * 0.17 : 0.33;
 
-            // La fotocamera segue dolcemente
+            // Fissiamo la X al centro della nostra nuova tela larga 2000px
+            const cameraX = (window.innerWidth * 0.5) - 1000; 
+            const cameraY = (window.innerHeight * targetRatioY) - point.y;
+
             gsap.to(camera, { 
                 x: cameraX, 
                 y: cameraY, 
