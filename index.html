@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portfolio - Animazione Scroll Pro</title>
+    <style>
+        /* RESET BASE */
+        body, html {
+            margin: 0;
+            padding: 0;
+            background-color: #fcfcfc;
+            overflow-x: hidden;
+        }
+
+        /* L'AREA DI SCROLL: crea lo spazio per poter scrollare, 
+           ma non contiene nulla di visibile. */
+        .scroll-area {
+            height: 5000px; /* Più è lungo, più lentamente si disegna la linea */
+        }
+
+        /* IL VIEWPORT FISSO: La nostra "Telecamera" che non si muove mai */
+        .fixed-viewport {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            pointer-events: none; /* Lascia passare i click allo sfondo */
+            overflow: hidden;
+        }
+
+        /* LA SCENA DELLA TELECAMERA: Questo div verrà mosso da JavaScript
+           per tenere la punta della linea sempre a fuoco. */
+        .camera {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            will-change: transform;
+        }
+
+        /* IL GRUPPO GOOEY: Applica il filtro che fonde la linea e il blob */
+        .gooey-group {
+            position: relative;
+            filter: url('#goo'); /* Richiama il filtro SVG nascosto in fondo */
+        }
+
+        /* IL BLOB ORGANICO E IMPREVEDIBILE */
+        .blob {
+            position: absolute;
+            width: 120px;  /* 4 volte la linea (30px) */
+            height: 120px;
+            background: #f05a28;
+            
+            /* Posizionato esattamente sul punto di partenza del tracciato (M 400 150) */
+            top: 150px;
+            left: 400px;
+            margin-top: -60px; /* Centra il blob sulle coordinate */
+            margin-left: -60px;
+            
+            /* Animazioni combinate: deformazione + rotazione = liquido */
+            animation: morph 7s ease-in-out infinite, spin 15s linear infinite;
+        }
+
+        @keyframes morph {
+            0% { border-radius: 40% 60% 60% 40% / 60% 30% 70% 40%; }
+            33% { border-radius: 70% 30% 50% 50% / 30% 70% 50% 50%; }
+            66% { border-radius: 100% 60% 60% 100% / 100% 100% 60% 60%; }
+            100% { border-radius: 40% 60% 60% 40% / 60% 30% 70% 40%; }
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg) scale(1); }
+            50% { transform: rotate(180deg) scale(1.05); } /* Leggero respiro */
+            100% { transform: rotate(360deg) scale(1); }
+        }
+
+        /* L'AREA DEL TRACCIATO */
+        .line-svg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 800px;
+            height: 2500px; /* Grandezza fissa della "tela" vettoriale */
+        }
+
+        path {
+            stroke: #f05a28;
+            stroke-width: 30; /* Proporzione 1 a 4 con il blob */
+            fill: none;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+        }
+
+        /* Nascondiamo il filtro SVG usato solo per calcoli visivi */
+        .hidden-filter {
+            position: absolute;
+            width: 0;
+            height: 0;
+        }
+    </style>
+</head>
+<body>
+
+    <svg class="hidden-filter">
+        <defs>
+            <filter id="goo">
+                <feGaussianBlur in="SourceGraphic" stdDeviation="15" result="blur" />
+                <feColorMatrix in="blur" mode="matrix" values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 25 -10" result="goo" />
+                <feBlend in="SourceGraphic" in2="goo" />
+            </filter>
+        </defs>
+    </svg>
+
+    <div class="scroll-area"></div>
+
+    <div class="fixed-viewport">
+        <div class="camera">
+            
+            <div class="gooey-group">
+                <div class="blob"></div>
+                
+                <svg class="line-svg" viewBox="0 0 800 2500">
+                    <path id="animatedLine" d="
+                        M 400 150 
+                        V 500 
+                        A 80 80 0 0 0 480 580 
+                        H 650 
+                        A 80 80 0 0 1 730 660 
+                        V 1100 
+                        A 80 80 0 0 1 650 1180 
+                        H 200 
+                        A 80 80 0 0 0 120 1260 
+                        V 1800
+                        A 80 80 0 0 0 200 1880
+                        H 400
+                        V 2400" 
+                    />
+                </svg>
+            </div>
+            
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+
+    <script>
+        gsap.registerPlugin(ScrollTrigger);
+
+        const path = document.querySelector("#animatedLine");
+        const camera = document.querySelector(".camera");
+        
+        // Misuriamo la lunghezza esatta del tracciato
+        const pathLength = path.getTotalLength();
+
+        // Prepariamo la linea (invisibile all'inizio)
+        gsap.set(path, {
+            strokeDasharray: pathLength,
+            strokeDashoffset: pathLength
+        });
+
+        // Funzione per centrare la telecamera sulla punta
+        function updateCamera(progress) {
+            // Calcoliamo quanta linea è stata disegnata finora
+            const drawLength = progress * pathLength;
+            
+            // Disegniamo la linea
+            gsap.set(path, { strokeDashoffset: pathLength - drawLength });
+
+            // Trucco magico: chiediamo al tracciato SVG le coordinate (x, y) 
+            // esatte della punta nel momento attuale!
+            const point = path.getPointAtLength(drawLength);
+
+            // Calcoliamo dove spostare la telecamera:
+            // Fissiamo l'asse X al centro della tela vettoriale (che è larga 800, quindi il centro è 400).
+            // L'asse Y continua a seguire la punta della linea per non lasciarla indietro.
+            const cameraX = (window.innerWidth * 0.5) - 400; 
+            const cameraY = (window.innerHeight * 0.33) - point.y;
+
+            // Spostiamo la "scena"
+            gsap.set(camera, { x: cameraX, y: cameraY });
+        }
+
+        // Settiamo la camera all'inizio prima che l'utente scrolli
+        updateCamera(0);
+
+        // Colleghiamo l'aggiornamento allo scroll
+        ScrollTrigger.create({
+            trigger: ".scroll-area",
+            start: "top top",
+            end: "bottom bottom",
+           scrub: 4, // Ammortizzazione molto morbida (ci mette 4 secondi a fermarsi dolcemente)
+            onUpdate: (self) => {
+                updateCamera(self.progress);
+            }
+        });
+
+        // Se l'utente ridimensiona la finestra, ricalcoliamo la centratura
+        window.addEventListener("resize", () => {
+            const st = ScrollTrigger.getAll()[0];
+            if(st) updateCamera(st.progress);
+        });
+    </script>
+</body>
+</html>
