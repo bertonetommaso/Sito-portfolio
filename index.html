@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="it">
 <head>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;700&display=swap" rel="stylesheet">
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Portfolio - Animazione Scroll Pro</title>
@@ -12,7 +13,36 @@ padding: 0;
 background-color: #fcfcfc;
 overflow-x: hidden;
 }
+<body>
+    <div class="home-btn">HOME</div>
 
+    <svg class="hidden-filter">
+    ```
+
+---
+
+### 3. CSS: Lo stile del bottone
+Aggiungi questo blocco alla fine del tuo tag `<style>` per posizionare il tasto fisso in alto a sinistra e dargli il font DM Sans Light:
+
+```css
+        /* TASTO HOME FISSO */
+        .home-btn {
+            position: fixed;
+            top: 40px;
+            left: 40px;
+            font-family: 'DM Sans', sans-serif;
+            font-weight: 300; /* 300 corrisponde al Light */
+            font-size: 16px;
+            letter-spacing: 1px;
+            color: #333;
+            cursor: pointer;
+            z-index: 9999; /* Sta sopra a tutto il resto */
+            transition: color 0.3s ease;
+        }
+
+        .home-btn:hover {
+            color: #f05a28; /* Si colora di arancione al passaggio del mouse */
+        }
 /* L'AREA DI SCROLL: crea lo spazio per poter scrollare, 
           ma non contiene nulla di visibile. */
 .scroll-area {
@@ -197,8 +227,9 @@ const targetRatioY = progress < 0.05 ? 0.5 + (progress / 0.05) * 0.30 : 0.80;
 
 // Il  centra già la tela orizzontalmente, quindi la telecamera deve stare ferma sullo zero
 const cameraX = 0; 
-const cameraY = (window.innerHeight * targetRatioY) - point.y;
-
+// Poiché il CSS è scalato a 0.8, dividiamo la finestra per 0.8 per riallineare la matematica di JavaScript alla resa visiva
+const scale = 0.8;
+const cameraY = ((window.innerHeight * targetRatioY) / scale) - point.y;
 gsap.to(camera, { 
 x: cameraX, 
 y: cameraY, 
@@ -223,6 +254,13 @@ window.addEventListener("resize", () => {
 const st = ScrollTrigger.getAll()[0];
 if(st) updateCamera(st.progress);
 });
+
+// LOGICA DEL TASTO HOME
+        document.querySelector('.home-btn').addEventListener('click', () => {
+            // Usiamo Lenis per riportare lo scroll a 0 (la cima assoluta) in modo vellutato
+            lenis.scrollTo(0, { duration: 1.5 });
+        });
+          
 </script>
 </body>
 </html>
