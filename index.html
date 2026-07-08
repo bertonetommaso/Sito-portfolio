@@ -41,34 +41,39 @@
             will-change: transform;
         }
 
-        /* IL GRUPPO GOOEY: Applica il filtro che fonde la linea e il blob */
+        /* IL GRUPPO (Senza filtro Gooey globale per evitare distorsioni sugli angoli) */
         .gooey-group {
             position: relative;
-            filter: url('#goo'); /* Richiama il filtro SVG nascosto in fondo */
+            /* Rimosso il filter: url('#goo'); per mantenere la traccia pulitissima */
         }
-
-        /* IL BLOB ORGANICO E IMPREVEDIBILE */
+/* IL BLOB ORGANICO E IPER-REALISTICO (Ingrandito 1.25x -> 150px) */
         .blob {
             position: absolute;
-            width: 120px;  /* 4 volte la linea (30px) */
-            height: 120px;
+            width: 150px;  
+            height: 150px;
             background: #f05a28;
             
-            /* Posizionato esattamente sul punto di partenza del tracciato (M 400 150) */
             top: 150px;
             left: 400px;
-            margin-top: -60px; /* Centra il blob sulle coordinate */
-            margin-left: -60px;
+            margin-top: -75px; /* Metà altezza per centrarlo perfettamente */
+            margin-left: -75px; /* Metà larghezza */
             
-            /* Animazioni combinate: deformazione + rotazione = liquido */
-            animation: morph 7s ease-in-out infinite, spin 15s linear infinite;
+            /* Animazione molto più complessa e stratificata */
+            animation: morph 8s ease-in-out infinite, spin 20s linear infinite;
+            
+            /* Aggiungiamo un'ombra interna per dargli più volume e matericità */
+            box-shadow: inset -10px -10px 20px rgba(0,0,0,0.1), 
+                        inset 10px 10px 20px rgba(255,255,255,0.2);
         }
 
+        /* Keyframes espansi: molti più punti di ancoraggio per un movimento liquido complesso */
         @keyframes morph {
-            0% { border-radius: 40% 60% 60% 40% / 60% 30% 70% 40%; }
-            33% { border-radius: 70% 30% 50% 50% / 30% 70% 50% 50%; }
-            66% { border-radius: 100% 60% 60% 100% / 100% 100% 60% 60%; }
-            100% { border-radius: 40% 60% 60% 40% / 60% 30% 70% 40%; }
+            0%   { border-radius: 40% 60% 70% 30% / 40% 50% 60% 50%; }
+            20%  { border-radius: 60% 40% 30% 70% / 60% 30% 70% 40%; }
+            40%  { border-radius: 30% 70% 60% 40% / 50% 60% 30% 60%; }
+            60%  { border-radius: 70% 30% 40% 60% / 30% 70% 50% 40%; }
+            80%  { border-radius: 50% 50% 70% 30% / 70% 40% 60% 30%; }
+            100% { border-radius: 40% 60% 70% 30% / 40% 50% 60% 50%; }
         }
 
         @keyframes spin {
@@ -86,14 +91,13 @@
             height: 2500px; /* Grandezza fissa della "tela" vettoriale */
         }
 
-        path {
+      path {
             stroke: #f05a28;
-            stroke-width: 30; /* Proporzione 1 a 4 con il blob */
+            stroke-width: 30; 
             fill: none;
-            stroke-linecap: round;
-            stroke-linejoin: round;
+            stroke-linecap: butt; /* Taglia la punta di netto, larga esattamente 30px */
+            stroke-linejoin: miter; /* Angoli perfetti e puliti al netto delle curvature del tracciato */
         }
-
         /* Nascondiamo il filtro SVG usato solo per calcoli visivi */
         .hidden-filter {
             position: absolute;
@@ -146,59 +150,72 @@
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    <script src="https://unpkg.com/@studio-freight/lenis@1.0.34/dist/lenis.min.js"></script>
 
     <script>
+        // Inizializza Lenis per lo smooth scrolling
+        const lenis = new Lenis({
+            duration: 1.5, // Quanto è lento e scivoloso lo scroll (aumenta per più scivolamento)
+            easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)), // Curva di smorzamento
+            direction: 'vertical',
+            smooth: true
+        });
+
+        // Collega Lenis al motore di rendering del browser
+        function raf(time) {
+            lenis.raf(time);
+            requestAnimationFrame(raf);
+        }
+        requestAnimationFrame(raf);
+
         gsap.registerPlugin(ScrollTrigger);
 
         const path = document.querySelector("#animatedLine");
         const camera = document.querySelector(".camera");
-        
-        // Misuriamo la lunghezza esatta del tracciato
         const pathLength = path.getTotalLength();
 
-        // Prepariamo la linea (invisibile all'inizio)
         gsap.set(path, {
             strokeDasharray: pathLength,
             strokeDashoffset: pathLength
         });
 
-        // Funzione per centrare la telecamera sulla punta
         function updateCamera(progress) {
-            // Calcoliamo quanta linea è stata disegnata finora
             const drawLength = progress * pathLength;
             
-            // Disegniamo la linea
-            gsap.set(path, { strokeDashoffset: pathLength - drawLength });
+            // Applichiamo la curva di Bezier all'animazione del tracciato
+            // Ora non è più pedissequo, ma "accelera e decelera" (ease)
+            gsap.to(path, { 
+                strokeDashoffset: pathLength - drawLength, 
+                ease: "power2.out", 
+                duration: 0.1 
+            });
 
-            // Trucco magico: chiediamo al tracciato SVG le coordinate (x, y) 
-            // esatte della punta nel momento attuale!
             const point = path.getPointAtLength(drawLength);
 
-            // Calcoliamo dove spostare la telecamera:
-            // Fissiamo l'asse X al centro della tela vettoriale (che è larga 800, quindi il centro è 400).
-            // L'asse Y continua a seguire la punta della linea per non lasciarla indietro.
             const cameraX = (window.innerWidth * 0.5) - 400; 
             const cameraY = (window.innerHeight * 0.33) - point.y;
 
-            // Spostiamo la "scena"
-            gsap.set(camera, { x: cameraX, y: cameraY });
+            // La fotocamera segue dolcemente
+            gsap.to(camera, { 
+                x: cameraX, 
+                y: cameraY, 
+                ease: "power2.out", 
+                duration: 0.5 
+            });
         }
 
-        // Settiamo la camera all'inizio prima che l'utente scrolli
         updateCamera(0);
 
-        // Colleghiamo l'aggiornamento allo scroll
         ScrollTrigger.create({
             trigger: ".scroll-area",
             start: "top top",
             end: "bottom bottom",
-           scrub: 4, // Ammortizzazione molto morbida (ci mette 4 secondi a fermarsi dolcemente)
+            scrub: 1, // Fluidità aggiuntiva sincronizzata con Lenis
             onUpdate: (self) => {
                 updateCamera(self.progress);
             }
         });
 
-        // Se l'utente ridimensiona la finestra, ricalcoliamo la centratura
         window.addEventListener("resize", () => {
             const st = ScrollTrigger.getAll()[0];
             if(st) updateCamera(st.progress);
