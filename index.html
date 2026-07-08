@@ -102,6 +102,50 @@
         stroke-linejoin: miter; 
     }
 
+    /* CONTENUTI DEI PROGETTI (Foto e Testo) */
+    .content-block {
+        position: absolute;
+        left: 50%;
+        margin-left: -650px; /* Centra perfettamente il blocco (largo 1300) nello schermo */
+        width: 1300px;       /* Larghezza totale dell'area utile (modificala se serve) */
+        display: flex;       /* Affianca foto e testo */
+        align-items: center; /* Li centra verticalmente tra loro */
+        justify-content: space-between;
+        gap: 80px;           /* Spazio vuoto tra la foto e il testo */
+        z-index: 5;          /* Si assicura che stiano sopra la linea arancione */
+        font-family: 'DM Sans', sans-serif;
+    }
+
+    /* La magia per invertire i lati nel secondo progetto */
+    .content-block.reverse {
+        flex-direction: row-reverse;
+    }
+
+    /* Stile della Foto (Il tuo riquadro nero) */
+    .photo-box {
+        flex: 1; /* Occupa metà dello spazio disponibile */
+        background: #222; /* Sfondo nero (come nel tuo mockup) */
+        height: 450px; /* Altezza della scatola */
+        border-radius: 8px;
+        overflow: hidden;
+    }
+
+    /* Quando inserirai la foto vera (`img`), riempirà il riquadro senza deformarsi */
+    .photo-box img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+
+    /* Stile del Testo */
+    .text-box {
+        flex: 1; /* Occupa l'altra metà */
+        font-weight: 400;
+        font-size: 18px;
+        line-height: 1.8;
+        color: #111;
+    }
+
     /* ANIMAZIONI BLOB */
     @keyframes morph {
         0%   { border-radius: 40% 60% 70% 30% / 40% 50% 60% 50%; }
@@ -158,6 +202,24 @@
                 "/>
             </svg>
         </div>
+        <div class="content-block" style="top: 800px;"> 
+                <div class="photo-box">
+                    </div>
+                <div class="text-box">
+                    <p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat.</p>
+                </div>
+            </div>
+
+            <div class="content-block reverse" style="top: 1700px;"> 
+                <div class="text-box">
+                    <p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit.</p>
+                </div>
+                <div class="photo-box">
+                    </div>
+            </div>
+
+        </div> 
+    </div>
     </div>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
