@@ -39,6 +39,8 @@ left: 0;
 width: 100%;
 height: 100%;
 will-change: transform;
+transform: scale(0.8); /* Riduce l'intera scena all'80%, facendola sembrare "zoomata" meno del 20% */
+transform-origin: top center; /* Mantiene la riduzione ancorata all'inizio della pagina */
 }
 
 /* IL GRUPPO (Solo per il blob e il pezzettino iniziale) */
@@ -193,7 +195,7 @@ const point = path.getPointAtLength(drawLength);
 // (Lock abbassato per permetterti di vedere il riquadro appena disegnato sopra la punta)
 const targetRatioY = progress < 0.05 ? 0.5 + (progress / 0.05) * 0.30 : 0.80;
 
-// Il CSS centra già la tela orizzontalmente, quindi la telecamera deve stare ferma sullo zero
+// Il  centra già la tela orizzontalmente, quindi la telecamera deve stare ferma sullo zero
 const cameraX = 0; 
 const cameraY = (window.innerHeight * targetRatioY) - point.y;
 
