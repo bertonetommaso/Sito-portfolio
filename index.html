@@ -41,12 +41,13 @@
             will-change: transform;
         }
 
-        /* IL GRUPPO (Senza filtro Gooey globale per evitare distorsioni sugli angoli) */
+        /* IL GRUPPO (Ripristiniamo il filtro per fondere blob e traccia) */
         .gooey-group {
             position: relative;
-            /* Rimosso il filter: url('#goo'); per mantenere la traccia pulitissima */
+            filter: url('#goo'); 
         }
-/* IL BLOB ORGANICO E IPER-REALISTICO (Ingrandito 1.25x -> 150px) */
+
+        /* IL BLOB ORGANICO (Senza ombra per permettere la fusione) */
         .blob {
             position: absolute;
             width: 150px;  
@@ -55,15 +56,10 @@
             
             top: 150px;
             left: 400px;
-            margin-top: -75px; /* Metà altezza per centrarlo perfettamente */
-            margin-left: -75px; /* Metà larghezza */
+            margin-top: -75px; 
+            margin-left: -75px; 
             
-            /* Animazione molto più complessa e stratificata */
             animation: morph 8s ease-in-out infinite, spin 20s linear infinite;
-            
-            /* Aggiungiamo un'ombra interna per dargli più volume e matericità */
-            box-shadow: inset -10px -10px 20px rgba(0,0,0,0.1), 
-                        inset 10px 10px 20px rgba(255,255,255,0.2);
         }
 
         /* Keyframes espansi: molti più punti di ancoraggio per un movimento liquido complesso */
@@ -111,13 +107,13 @@
     <svg class="hidden-filter">
         <defs>
             <filter id="goo">
-                <feGaussianBlur in="SourceGraphic" stdDeviation="15" result="blur" />
-                <feColorMatrix in="blur" mode="matrix" values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 25 -10" result="goo" />
+                <feGaussianBlur in="SourceGraphic" stdDeviation="8" result="blur" />
+                <feColorMatrix in="blur" mode="matrix" values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 18 -7" result="goo" />
                 <feBlend in="SourceGraphic" in2="goo" />
             </filter>
         </defs>
     </svg>
-
+    
     <div class="scroll-area"></div>
 
     <div class="fixed-viewport">
@@ -129,18 +125,19 @@
                 <svg class="line-svg" viewBox="0 0 800 2500">
                     <path id="animatedLine" d="
                         M 400 150 
-                        V 500 
-                        A 80 80 0 0 0 480 580 
-                        H 650 
-                        A 80 80 0 0 1 730 660 
-                        V 1100 
-                        A 80 80 0 0 1 650 1180 
-                        H 200 
-                        A 80 80 0 0 0 120 1260 
-                        V 1800
-                        A 80 80 0 0 0 200 1880
-                        H 400
-                        V 2400" 
+                        V 400 
+                        A 80 80 0 0 0 480 480 
+                        H 700 
+                        A 80 80 0 0 1 780 560 
+                        V 1000 
+                        A 80 80 0 0 1 700 1080 
+                        H 100 
+                        A 80 80 0 0 0 20 1160 
+                        V 1600
+                        A 80 80 0 0 0 100 1680
+                        H 320
+                        A 80 80 0 0 1 400 1760
+                        V 2500" 
                     />
                 </svg>
             </div>
