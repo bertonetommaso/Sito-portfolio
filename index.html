@@ -189,9 +189,10 @@
             const point = path.getPointAtLength(drawLength);
 
             // MAGIA DEL CENTRAMENTO:
-            // Da scroll zero al 5%, la telecamera passa fluidamente dal 50% dell'altezza schermo al 33%.
-            const targetRatioY = progress < 0.05 ? 0.5 - (progress / 0.05) * 0.17 : 0.33;
-
+            // Da scroll zero al 5%, la telecamera scende fluidamente dal 50% dell'altezza schermo all'80%.
+            // (Lock abbassato per permetterti di vedere il riquadro appena disegnato sopra la punta)
+            const targetRatioY = progress < 0.05 ? 0.5 + (progress / 0.05) * 0.30 : 0.80;
+            
             // Fissiamo la X al centro della nostra nuova tela larga 2000px
             const cameraX = (window.innerWidth * 0.5) - 1000; 
             const cameraY = (window.innerHeight * targetRatioY) - point.y;
