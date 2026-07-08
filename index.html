@@ -13,17 +13,26 @@ padding: 0;
 background-color: #fcfcfc;
 overflow-x: hidden;
 }
-<body>
-    <div class="home-btn">HOME</div>
+/* STILE TASTO HOME */
+        .home-btn {
+            position: fixed;
+            top: 40px;
+            left: 40px;
+            font-family: 'DM Sans', sans-serif;
+            font-weight: 300; /* Font Light */
+            font-size: 16px;
+            letter-spacing: 1px;
+            color: #333;
+            cursor: pointer;
+            z-index: 99999; /* Sta forzatamente sopra a tutto */
+            pointer-events: auto; /* Garantisce la cliccabilità */
+            transition: color 0.3s ease;
+        }
+        .home-btn:hover {
+            color: #f05a28;
+        }
 
-    <svg class="hidden-filter">
-    ```
-
----
-
-### 3. CSS: Lo stile del bottone
-Aggiungi questo blocco alla fine del tuo tag `<style>` per posizionare il tasto fisso in alto a sinistra e dargli il font DM Sans Light:
-
+    
 ```css
         /* TASTO HOME FISSO */
         .home-btn {
@@ -43,6 +52,14 @@ Aggiungi questo blocco alla fine del tuo tag `<style>` per posizionare il tasto 
         .home-btn:hover {
             color: #f05a28; /* Si colora di arancione al passaggio del mouse */
         }
+    
+<body>
+    <div class="home-btn">HOME</div>
+
+    <svg class="hidden-filter">
+    ```
+
+
 /* L'AREA DI SCROLL: crea lo spazio per poter scrollare, 
           ma non contiene nulla di visibile. */
 .scroll-area {
@@ -63,15 +80,13 @@ overflow: hidden;
 /* LA SCENA DELLA TELECAMERA: Questo div verrà mosso da JavaScript
           per tenere la punta della linea sempre a fuoco. */
 .camera {
-position: absolute;
-top: 0;
-left: 0;
-width: 100%;
-height: 100%;
-will-change: transform;
-transform: scale(0.8); /* Riduce l'intera scena all'80%, facendola sembrare "zoomata" meno del 20% */
-transform-origin: top center; /* Mantiene la riduzione ancorata all'inizio della pagina */
-}
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            will-change: transform;
+        }
 
 /* IL GRUPPO (Solo per il blob e il pezzettino iniziale) */
 .gooey-group {
@@ -82,28 +97,26 @@ z-index: 2; /* Sta sopra la linea animata per nascondere la giuntura */
 
 /* IL BLOB (Centrato assoluto) */
 .blob {
-position: absolute;
-width: 150px;  
-height: 150px;
-background: #f05a28;
-
-top: 150px;
-left: 50%;
-margin-top: -75px; 
-margin-left: -75px; 
-
-animation: morph 8s ease-in-out infinite, spin 20s linear infinite;
-}
+            position: absolute;
+            width: 120px;  
+            height: 120px;
+            background: #f05a28;
+            top: 120px;
+            left: 50%;
+            margin-top: -60px; /* Metà di 120 */
+            margin-left: -60px; /* Metà di 120 */
+            animation: morph 8s ease-in-out infinite, spin 20s linear infinite;
+        }
 
 /* LE TELE SVG (Larghissime per toccare i bordi dello schermo) */
 .line-svg {
-position: absolute;
-top: 0;
-left: 50%;
-margin-left: -1000px; 
-width: 2000px;
-height: 8000px; /* Tela allungata a 6000px per ospitare tutti i gradini */
-}
+            position: absolute;
+            top: 0;
+            left: 50%;
+            margin-left: -800px; /* Metà di 1600 */
+            width: 1600px;
+            height: 6400px;
+        }
 
 /* La traccia animata è isolata dal filtro! */
 .animated-line-container {
@@ -262,5 +275,6 @@ if(st) updateCamera(st.progress);
         });
           
 </script>
+    <div class="home-btn">HOME</div>
 </body>
 </html>
