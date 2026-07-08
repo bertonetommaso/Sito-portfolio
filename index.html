@@ -86,6 +86,16 @@ stroke-linecap: butt;
 stroke-linejoin: miter; 
 }
 
+/* PARTICELLE DELLO SBLOCCO A MOLLA */
+        .burst-particle {
+            position: absolute;
+            width: 14px;
+            height: 14px;
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 3;
+        }
+
 /* Keyframes espansi: molti più punti di ancoraggio per un movimento liquido complesso */
 @keyframes morph {
 0%   { border-radius: 40% 60% 70% 30% / 40% 50% 60% 50%; }
@@ -177,33 +187,103 @@ strokeDasharray: pathLength,
 strokeDashoffset: pathLength
 });
 
-function updateCamera(progress) {
-const drawLength = progress * pathLength;
+// VARIABILE PER MEMORIZZARE LO STATO DELLA MOLLA
+        let isUnlocked = false;
 
-gsap.to(path, { 
-strokeDashoffset: pathLength - drawLength, 
-ease: "power2.out", 
-duration: 0.1 
-});
+        function updateCamera(progress) {
+            // "Durezza" della molla: l'utente deve scrollare il 4% dell'intera pagina prima di rompere la tensione
+            const threshold = 0.04; 
+            
+            if (progress < threshold) {
+                // 1. FASE DI RESISTENZA (Tiriamo l'elastico)
+                isUnlocked = false;
+                
+                // La traccia animata resta nascosta nel blob
+                gsap.to(path, { strokeDashoffset: pathLength, duration: 0.1 });
+                
+                // Calcoliamo la "tensione" da 0 a 1 man mano che l'utente scende
+                const tension = progress / threshold; 
+                
+                // Deformiamo il blob fisicamente: si allunga verso il basso e si smagrisce ai lati
+                gsap.to('.blob', { 
+                    y: tension * 45, // Scende di 45px
+                    scaleY: 1 + (tension * 0.25), // Si allunga
+                    scaleX: 1 - (tension * 0.15), // Si stringe
+                    duration: 0.1 
+                });
+                
+                // La telecamera non si muove per farti percepire il blocco
+                gsap.to(camera, { x: 0, y: 0, duration: 0.1 });
+                
+            } else {
+                // 2. FASE SBLOCCATA (Rilascio della molla ed esplosione!)
+                if (!isUnlocked) {
+                    isUnlocked = true;
+                    // Il blob schizza indietro con un effetto "boing" molto elastico
+                    gsap.to('.blob', { y: 0, scaleY: 1, scaleX: 1, duration: 0.9, ease: "elastic.out(1, 0.3)" });
+                    // Spariamo le particelle
+                    createBurst();
+                }
 
-const point = path.getPointAtLength(drawLength);
+                // Ricalcoliamo il progresso matematico: il viaggio della linea inizia ORA, dopo la soglia
+                const adjProgress = (progress - threshold) / (1 - threshold);
+                const drawLength = adjProgress * pathLength;
+                
+                // Srotoliamo la linea in modo fluido
+                gsap.to(path, { 
+                    strokeDashoffset: pathLength - drawLength, 
+                    ease: "power2.out", 
+                    duration: 0.1 
+                });
 
-// MAGIA DEL CENTRAMENTO:
-// Da scroll zero al 5%, la telecamera scende fluidamente dal 50% dell'altezza schermo all'80%.
-// (Lock abbassato per permetterti di vedere il riquadro appena disegnato sopra la punta)
-const targetRatioY = progress < 0.05 ? 0.5 + (progress / 0.05) * 0.30 : 0.80;
+                // Spostiamo la telecamera
+                const point = path.getPointAtLength(drawLength);
+                const targetRatioY = adjProgress < 0.05 ? 0.5 + (adjProgress / 0.05) * 0.30 : 0.80;
+                const cameraY = (window.innerHeight * targetRatioY) - point.y;
 
-// Il CSS centra già la tela orizzontalmente, quindi la telecamera deve stare ferma sullo zero
-const cameraX = 0; 
-const cameraY = (window.innerHeight * targetRatioY) - point.y;
+                gsap.to(camera, { 
+                    x: 0, 
+                    y: cameraY, 
+                    ease: "power2.out", 
+                    duration: 0.5 
+                });
+            }
+        }
 
-gsap.to(camera, { 
-x: cameraX, 
-y: cameraY, 
-ease: "power2.out", 
-duration: 0.5 
-});
-}
+        // FUNZIONE PER CREARE L'ESPLOSIONE ORGANICA (IL POP!)
+        function createBurst() {
+            // Usiamo diverse tonalità del tuo arancione per dare tridimensionalità
+            const colors = ['#f05a28', '#ff7b54', '#ffb291']; 
+            const container = document.querySelector('.gooey-group');
+            
+            for(let i = 0; i < 25; i++) {
+                const p = document.createElement('div');
+                p.className = 'burst-particle';
+                container.appendChild(p);
+                
+                // Partono da sotto il blob
+                gsap.set(p, { 
+                    x: 1000, 
+                    y: 200, 
+                    scale: Math.random() * 0.8 + 0.4, 
+                    backgroundColor: colors[Math.floor(Math.random() * colors.length)] 
+                });
+                
+                // Esplodono a ventaglio verso il basso simulando la gravità
+                const angle = (Math.random() * 120 + 30) * (Math.PI / 180); 
+                const velocity = 60 + Math.random() * 150;
+                
+                gsap.to(p, {
+                    x: `+=${Math.cos(angle) * velocity}`,
+                    y: `+=${Math.sin(angle) * velocity + 80}`, // gravità
+                    scale: 0,
+                    opacity: 0,
+                    duration: 0.6 + Math.random() * 0.5,
+                    ease: "power3.out",
+                    onComplete: () => p.remove() // Eliminiamo la particella per non appesantire il sito
+                });
+            }
+        }
 
 updateCamera(0);
 
