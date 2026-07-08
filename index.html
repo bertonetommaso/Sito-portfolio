@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Portfolio - Animazione Scroll Pro</title>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;700&display=swap" rel="stylesheet">
     <style>
         /* RESET BASE */
         body, html {
@@ -130,8 +131,115 @@
     <div class="fixed-viewport">
         <div class="camera">
             
+            <div class="blob-hint">
+                <div>click here</div>
+                <div class="arrow">↓</div>
+            </div>
+
             <div class="gooey-group">
-                <div class="blob"></div>
+                <div class="blob" style="cursor: pointer;"></div> <svg class="line-svg" viewBox="0 0 2000 8000">
+                    <path d="M 1000 150 V 180" />
+                </svg>
+            </div>
+            
+            <div class="about-card">
+                <span class="face-text">me :]</span>
+                
+                <div class="about-content">
+                    <h2>Hello!</h2>
+                    <p>Qui c'è spazio per la tua foto e il tuo testo.</p>
+                </div>
+            </div>
+            
+            ```
+
+---
+
+### 3. Il CSS: Stile ed Effetti Visivi
+Aggiungiamo le regole per la forma irregolare, i font e l'effetto sfuocato. Incolla tutto questo blocco **alla fine del tuo tag `<style>`**:
+
+```css
+        /* SCRITTA E FRECCIA */
+        .blob-hint {
+            position: absolute;
+            top: 40px;
+            left: 50%;
+            margin-left: -50px;
+            width: 100px;
+            text-align: center;
+            font-family: 'DM Sans', sans-serif;
+            font-weight: 700;
+            color: #f05a28;
+            z-index: 10;
+            pointer-events: none;
+        }
+        .blob-hint .arrow {
+            font-size: 24px;
+            margin-top: 5px;
+            animation: bounce 1.5s infinite;
+        }
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(10px); }
+        }
+
+        /* IL BOX TRASCINABILE */
+        .about-card {
+            position: absolute;
+            top: 150px;
+            left: 50%;
+            width: 200px; /* Forma allungata */
+            height: 90px;
+            margin-left: -100px;
+            margin-top: -45px;
+            background: #f05a28;
+            /* Forma irregolare organica */
+            border-radius: 60% 40% 30% 70% / 40% 50% 60% 50%; 
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-family: 'DM Sans', sans-serif;
+            color: #fcfcfc;
+            font-size: 24px;
+            font-weight: 700;
+            cursor: grab;
+            opacity: 0; /* Invisibile all'inizio */
+            pointer-events: none; /* Non cliccabile finché non viene "sputato" */
+            z-index: 100;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(240, 90, 40, 0.3);
+        }
+        .about-card:active {
+            cursor: grabbing;
+        }
+
+        /* CONTENUTO INTERNO (Nascosto di default) */
+        .about-content {
+            opacity: 0;
+            position: absolute;
+            padding: 40px;
+            text-align: center;
+            pointer-events: none;
+        }
+
+        /* PARTICELLE DEL TRAIL */
+        .trail-particle {
+            position: absolute;
+            width: 15px;
+            height: 15px;
+            background: #f05a28;
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 99;
+            transform: translate(-50%, -50%);
+        }
+
+        /* SFOCATURA DELLO SFONDO */
+        .camera.is-blurred {
+            filter: blur(15px);
+            transition: filter 0.8s ease;
+            pointer-events: none;
+        }
                 
                 <svg class="line-svg" viewBox="0 0 2000 8000">
                     <path d="M 1000 150 V 180" />
@@ -204,7 +312,104 @@
                 duration: 0.5 
             });
         }
+        gsap.registerPlugin(Draggable);
 
+        const blob = document.querySelector('.blob');
+        const card = document.querySelector('.about-card');
+        const hint = document.querySelector('.blob-hint');
+        const face = document.querySelector('.face-text');
+        const viewport = document.querySelector('.fixed-viewport');
+        const cameraDiv = document.querySelector('.camera');
+        
+        let isCardOut = false;
+        let isFullscreen = false;
+
+        // 1. CLIC SUL BLOB: "Sputa" la casella
+        blob.addEventListener('click', () => {
+            if (isCardOut) return;
+            isCardOut = true;
+            
+            // Fai sparire la scritta "click here"
+            gsap.to(hint, { opacity: 0, y: -20, duration: 0.3 });
+            
+            // Animazione "sputo" organico
+            gsap.to(card, {
+                opacity: 1,
+                pointerEvents: 'auto',
+                x: 250, // Lo spara a destra
+                y: -100, // Lo spara in alto
+                rotation: -8, // Lo inclina leggermente
+                duration: 1.5,
+                ease: "elastic.out(1, 0.4)" // Rimbalzo gommoso
+            });
+        });
+
+        // 2. LOGICA DI TRASCINAMENTO E CLICK
+        Draggable.create(card, {
+            type: "x,y",
+            onPress: function() {
+                // Cambia faccia quando premi (se non è a tutto schermo)
+                if (!isFullscreen) face.innerText = "me ;/";
+            },
+            onRelease: function() {
+                // Torna sorridente quando rilasci
+                if (!isFullscreen) face.innerText = "me :]";
+            },
+            onDrag: function() {
+                if (isFullscreen) return; // Disabilita scia a tutto schermo
+                
+                // Crea l'effetto scia (Trail)
+                const p = document.createElement('div');
+                p.className = 'trail-particle';
+                viewport.appendChild(p);
+                
+                // Centra la particella sul mouse
+                gsap.set(p, { x: this.pointerX, y: this.pointerY });
+                
+                // Animazione di dissolvenza particella
+                gsap.to(p, {
+                    scale: 0,
+                    opacity: 0,
+                    y: "+=30", // Cade leggermente verso il basso
+                    duration: 0.6,
+                    onComplete: () => p.remove() // Pulisce il codice HTML
+                });
+            },
+            onClick: function() {
+                if (isFullscreen) return;
+                isFullscreen = true;
+                
+                // Spostiamo la card nel viewport fisso per sfuggire al movimento dello scroll
+                const rect = card.getBoundingClientRect();
+                viewport.appendChild(card);
+                
+                // La blocchiamo al volo dov'era
+                gsap.set(card, {
+                    x: 0, y: 0,
+                    left: rect.left,
+                    top: rect.top,
+                    margin: 0,
+                    rotation: 0
+                });
+                
+                // Sfochiamo tutto il sito dietro
+                cameraDiv.classList.add('is-blurred');
+                
+                // Espandiamo a tutto schermo
+                gsap.to(card, {
+                    left: 0, top: 0,
+                    width: '100vw', height: '100vh',
+                    borderRadius: 0,
+                    duration: 0.8,
+                    ease: "power3.inOut",
+                    onComplete: () => {
+                        // Nascondi la faccina e mostra il contenuto
+                        gsap.to(face, { opacity: 0, duration: 0.2 });
+                        gsap.to('.about-content', { opacity: 1, pointerEvents: 'auto', duration: 0.5 });
+                    }
+                });
+            }
+        });
         updateCamera(0);
 
         ScrollTrigger.create({
@@ -214,13 +419,16 @@
             scrub: 1, // Fluidità aggiuntiva sincronizzata con Lenis
             onUpdate: (self) => {
                 updateCamera(self.progress);
+                
             }
+            
         });
-
+    
         window.addEventListener("resize", () => {
             const st = ScrollTrigger.getAll()[0];
             if(st) updateCamera(st.progress);
         });
     </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/Draggable.min.js"></script>
 </body>
 </html>
