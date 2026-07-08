@@ -66,7 +66,7 @@
         z-index: 2; 
     }
 
-    /* BLOB (Ridotto del 20%) */
+    /* BLOB */
     .blob {
         position: absolute;
         width: 120px;  
@@ -79,7 +79,7 @@
         animation: morph 8s ease-in-out infinite, spin 20s linear infinite;
     }
 
-    /* TELA SVG (Ridotta del 20%) */
+    /* TELA SVG */
     .line-svg {
         position: absolute;
         top: 0;
@@ -106,31 +106,29 @@
     .content-block {
         position: absolute;
         left: 50%;
-        margin-left: -650px; /* Centra perfettamente il blocco (largo 1300) nello schermo */
-        width: 1300px;       /* Larghezza totale dell'area utile (modificala se serve) */
-        display: flex;       /* Affianca foto e testo */
-        align-items: center; /* Li centra verticalmente tra loro */
+        margin-left: -650px; 
+        width: 1300px;       
+        display: flex;       
+        align-items: center; 
         justify-content: space-between;
-        gap: 80px;           /* Spazio vuoto tra la foto e il testo */
-        z-index: 5;          /* Si assicura che stiano sopra la linea arancione */
+        gap: 80px;           
+        z-index: 5;          
         font-family: 'DM Sans', sans-serif;
     }
 
-    /* La magia per invertire i lati nel secondo progetto */
     .content-block.reverse {
         flex-direction: row-reverse;
     }
 
-    /* Stile della Foto (Il tuo riquadro nero) */
+    /* Stile della Foto */
     .photo-box {
-        flex: 1; /* Occupa metà dello spazio disponibile */
-        background: #222; /* Sfondo nero (come nel tuo mockup) */
-        height: 450px; /* Altezza della scatola */
+        flex: 1; 
+        background: #222; 
+        height: 450px; 
         border-radius: 8px;
         overflow: hidden;
     }
 
-    /* Quando inserirai la foto vera (`img`), riempirà il riquadro senza deformarsi */
     .photo-box img {
         width: 100%;
         height: 100%;
@@ -139,7 +137,7 @@
 
     /* Stile del Testo */
     .text-box {
-        flex: 1; /* Occupa l'altra metà */
+        flex: 1; 
         font-weight: 400;
         font-size: 18px;
         line-height: 1.8;
@@ -190,39 +188,31 @@
         <div class="camera">
 
             <div class="gooey-group">
-                ... (codice del blob) ...
+                <div class="blob"></div>
+                <svg class="line-svg" viewBox="0 0 2000 8000">
+                    <path d="M 1000 150 V 180" />
+                </svg>
             </div>
 
             <svg class="line-svg animated-line-container" viewBox="0 0 2000 8000">
-                ... (il tuo tracciato) ...
+                <path id="animatedLine" d="
+                    M1000,150v731.09c0,11.05-8.95,20-20,20H225.09c-11.05,0-20,8.95-20,20v373.62c0,11.05,8.95,20,20,20h1555.23c11.05,0,20,8.95,20,20v373.62c0,11.05-8.95,20-20,20H637.32c-11.05,0-20,8.95-20,20v373.62c0,11.05,8.95,20,20,20h754.91c11.05,0,20,8.95,20,20v373.62c0,11.05-8.95,20-20,20H225.09c-11.05,0-20,8.95-20,20v373.62c0,11.05,8.95,20,20,20h1555.23c11.05,0,20,8.95,20,20v787.23c0,11.05-8.95,20-20,20h-348.09c-11.05,0-20,8.95-20,20v373.62c0,11.05-8.95,20-20,20H225.09c-11.05,0-20,8.95-20,20v373.62c0,11.05,8.95,20,20,20h1555.23c11.05,0,20,8.95,20,20v373.62c0,11.05-8.95,20-20,20h-348.09c-11.05,0-20,8.95-20,20v373.62c0,11.05,8.95,20,20,20h348.09c11.05,0,20,8.95,20,20v373.62c0,11.05-8.95,20-20,20H225.09c-11.05,0-20,8.95-20,20v373.62c0,11.05,8.95,20,20,20h769.69c11.05,0,20,8.95,20,20v373.62c0,11.05-8.95,20-20,20h-357.46c-11.05,0-20,8.95-20,20v373.62c0,11.05,8.95,20,20,20h1143c11.05,0,20,8.95,20,20v373.62c0,11.05-8.95,20-20,20H205.09
+                "/>
             </svg>
 
             <div class="content-block" style="top: 800px;"> 
                 <div class="photo-box"></div>
-                <div class="text-box"><p>Testo 1...</p></div>
+                <div class="text-box"><p>Testo del primo progetto. Sostituisci questo testo in futuro!</p></div>
             </div>
-
-            <div class="content-block reverse" style="top: 1700px;"> 
-                <div class="text-box"><p>Testo 2...</p></div>
-                <div class="photo-box"></div>
-            </div>
-
-        </div> 
-    </div>
 
             <div class="content-block reverse" style="top: 1700px;"> 
                 <div class="text-box">
-                    <p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit.</p>
+                    <p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.</p>
                 </div>
-                <div class="photo-box">
-                    </div>
+                <div class="photo-box"></div>
             </div>
 
-        </div> 
-    </div>
-    </div>
-
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+        </div> </div> <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
     <script src="https://unpkg.com/@studio-freight/lenis@1.0.34/dist/lenis.min.js"></script>
 
@@ -252,15 +242,12 @@
             strokeDashoffset: pathLength
         });
 
-        // MOTORE DELLA TELECAMERA (PULITO E IMMEDIATO)
+        // MOTORE DELLA TELECAMERA
         function updateCamera(progress) {
-            
-            // Lettura dinamica delle proporzioni fisiche del CSS rispetto al ViewBox
             const svgElement = document.querySelector('.animated-line-container');
             const svgHeight = svgElement.getBoundingClientRect().height || 6400; 
             const scaleRatio = svgHeight / 8000; 
 
-            // Movimento della traccia immediato, sincronizzato allo scroll
             const drawLength = progress * pathLength;
             
             gsap.to(path, { 
@@ -271,7 +258,6 @@
 
             const point = path.getPointAtLength(drawLength);
             
-            // Allineamento visuale matematico
             const visualPointY = point.y * scaleRatio;
             const targetRatioY = progress < 0.05 ? 0.5 + (progress / 0.05) * 0.30 : 0.80;
             
@@ -298,7 +284,6 @@
             }
         });
 
-        // RICALCOLO AL RESIZE DELLA FINESTRA
         window.addEventListener("resize", () => {
             const st = ScrollTrigger.getAll()[0];
             if(st) updateCamera(st.progress);
