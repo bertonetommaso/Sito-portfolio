@@ -159,6 +159,47 @@ line-height: 1.8;
 color: #111;
 }
 
+/* TESTO SOPRA IL BLOB (Scroll down) */
+    .intro-text {
+        position: absolute;
+        top: 30px; /* Distanza dal tetto del sito */
+        left: 50%;
+        transform: translateX(-50%); /* Lo centra matematicamente a metà */
+        text-align: center;
+        font-family: 'DM Sans', sans-serif;
+        font-weight: 300; /* Font Light */
+        font-size: 20px;
+        color: #333;
+        z-index: 10;
+    }
+
+    /* TITOLO GIGANTE (Hi! I'm Tommaso) */
+    .hero-title {
+        position: absolute;
+        left: 50%;
+        margin-left: -50px; /* Mantiene 50px di "respiro" dalla linea arancione */
+        transform: translateX(-100%); /* Ancora il testo a destra, facendolo crescere verso sinistra */
+        text-align: center;
+        font-family: 'DM Sans', sans-serif;
+        color: #555;
+        z-index: 5;
+    }
+    
+    .hero-title h1 {
+        font-weight: 300; /* Font Light */
+        font-size: 180px; /* Dimensione gigante */
+        margin: 0;
+        line-height: 0.75;
+        letter-spacing: -4px; /* Stringe le lettere per l'effetto tipografico */
+    }
+    
+    .hero-title h2 {
+        font-weight: 300;
+        font-size: 42px;
+        margin: 15px 0 0 0;
+        letter-spacing: -1px;
+    }
+
 /* ANIMAZIONI BLOB */
 @keyframes morph {
 0%   { border-radius: 40% 60% 70% 30% / 40% 50% 60% 50%; }
@@ -200,7 +241,25 @@ height: 0;
 <div class="scroll-area"></div>
 
 <div class="fixed-viewport">
-<div class="camera">
+        <div class="camera">
+
+            <div class="intro-text">
+                scroll down to<br>get to know me!
+            </div>
+
+            <div class="hero-title" style="top: 620px;">
+                <h1>hi!</h1>
+                <h2>I'm Tommaso Bertone</h2>
+            </div>
+
+            <div class="gooey-group">
+                <div class="blob"></div>
+                ```
+
+**Come regolare la posizione di "hi!":**
+Nel codice HTML che ti ho scritto qui sopra c'è `style="top: 620px;"`. Ho calcolato questo numero sapendo che la tua linea scende per circa 730 pixel.
+Se per caso vedi che il testo tocca la linea arancione orizzontale in basso o le sta troppo lontano, ti basterà aumentare o diminuire leggermente quel `620` finché
+                non sfiora la linea arancione con eleganza, esattamente come nel tuo screenshot.
 
 <div class="gooey-group">
                 ... (codice del blob) ...
