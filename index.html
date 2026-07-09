@@ -152,6 +152,12 @@ line-height: 1.8;
 color: #111;
 }
 
+/* Allarga solo il blocco di Cavea per separare foto e testo */
+.cavea-layout {
+    width: 1600px !important;    /* Più largo degli altri blocchi */
+    margin-left: -800px !important; /* Sempre la metà della larghezza in negativo */
+}
+
 /* TITOLI DEI PROGETTI (Es. Viote) */
 .project-title {
 font-weight: 300; /* Mantiene il font in versione Thin/Light */
@@ -321,11 +327,15 @@ enjoy these projects of mine!
                 <div class="text-box">
                     <p class="project-title">Toori</p>
                 </div>
-            </div> <div class="content-block" style="top: 4010px;"> 
-                <div class="photo-box"></div>
+            <div class="content-block cavea-layout" style="top: 3600px;"> 
+                
+                <div class="photo-box">
+                    </div>
+
                 <div class="text-box">
                     <p class="project-title">Cavea</p>
                 </div>
+                
             </div>
             </div>
 
