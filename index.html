@@ -125,15 +125,19 @@ flex-direction: row-reverse;
 }
 
 /* Stile della Foto (Blobby) */
+/* Stile della Foto (Rettangolare pulito) */
 .photo-box {
     flex: 1; 
     background: #222; 
     height: 360px; 
+    border-radius: 8px; /* <--- Tornato il classico rettangolo */
     overflow: hidden;
     box-shadow: 0 10px 30px rgba(0,0,0,0.05); 
-    /* Questa riga trasforma il rettangolo in un blob animato! */
-    animation: morph 8s ease-in-out infinite; 
+    /* Animazione blob rimossa! */
 }
+
+/* OPZIONALE: Puoi anche cancellare l'intera classe .cavea-layout dal tuo CSS, 
+   visto che ora useremo il blocco standard per evitare errori di allineamento */
 
 .photo-box img {
     width: 100%;
@@ -441,7 +445,7 @@ scroll down to<br>get to know me!
 </svg>
 <div class="content-block" style="top: 800px;"> 
                 <div class="photo-box" style="animation-delay: 0s;">
-                    <img src="foto-profilo.jpg" alt="Ritratto di Tommaso Bertone">
+                    <img src="foto-profilo.jpeg" alt="Ritratto di Tommaso Bertone">
                 </div>
                 <div class="text-box" style="width: 780px; flex-shrink: 0; margin-left: -70px; margin-top: -35px;">
                     <p>22 year, studying Product Design at Politecnico di Torino.<br>
@@ -459,7 +463,7 @@ scroll down to<br>get to know me!
                     <p class="project-title">Viote</p>
                 </div>
                 <div class="photo-box" style="animation-delay: -1s;">
-                    <img src="viote.jpg" alt="Viote">
+                    <img src="viote.jpeg" alt="Viote">
                 </div>
             </div>
 
@@ -468,31 +472,34 @@ scroll down to<br>get to know me!
                     <p class="project-title">Clivio</p>
                 </div>
                 <div class="photo-box" style="animation-delay: -2s;">
-                    <img src="clivio.jpg" alt="Clivio">
+                    <img src="clivio.jpeg" alt="Clivio">
                 </div>
             </div>
 
             <div class="content-block" style="top: 3400px;"> 
                 <div class="photo-box" style="animation-delay: -3s;">
-                    <img src="toori.jpg" alt="Toori">
+                    <img src="toori.jpeg" alt="Toori">
                 </div>
                 <div class="text-box text-align-right">
                     <p class="project-title">Toori</p>
                 </div>
             </div> 
             
-            <div class="content-block cavea-layout" style="top: 4070px;"> 
+            <div class="content-block" style="top: 4070px;"> 
+                
                 <div class="text-box">
                     <p class="project-title">Cavea</p>
                 </div>
-                <div class="photo-box" style="animation-delay: -4s;">
+                
+                <div class="photo-box">
                     <img src="cavea.jpg" alt="Cavea">
                 </div>
-            </div> 
+                
+            </div>
             
             <div class="content-block" style="top: 4730px;"> 
                 <div class="photo-box" style="animation-delay: -5s;">
-                    <img src="prova.jpg" alt="Nook">
+                    <img src="prova.jpeg" alt="Nook">
                 </div>
                 <div class="text-box text-align-right">
                     <p class="project-title">Nook</p>
@@ -501,7 +508,7 @@ scroll down to<br>get to know me!
             
             <div class="content-block" style="top: 5130px;"> 
                 <div class="photo-box" style="animation-delay: -6s;">
-                    <img src="varkumla.jpg" alt="Varkumla">
+                    <img src="varkumla.jpeg" alt="Varkumla">
                 </div>
                 <div class="text-box text-align-right">
                     <p class="project-title"><em>building</em> Vårkumla</p>
