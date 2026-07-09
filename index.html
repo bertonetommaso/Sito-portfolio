@@ -5,7 +5,9 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Portfolio - Animazione Scroll Pro</title>
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;700&display=swap" rel="stylesheet">
-<style>
+<link rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+  <style>
 /* RESET BASE */
 body, html {
 margin: 0;
@@ -230,12 +232,12 @@ letter-spacing: -1px;
 
 .social-sidebar{
     position:fixed;
-    right:48px;
-    top:50%;
-    transform:translateY(-50%);
+    left:50%;
+    bottom:40px;
+    transform:translateX(-50%);
     display:flex;
-    flex-direction:column;
-    gap:20px;
+    flex-direction:row;
+    gap:22px;
     z-index:9999;
 }
 
@@ -288,11 +290,10 @@ letter-spacing: -1px;
     box-shadow:0 12px 30px rgba(0,0,0,.12);
 }
   
-.icon-content svg{
-    width:26px;
-    height:26px;
+.icon-content i{
     position:relative;
     z-index:2;
+    font-size:24px;
 }
 
 .filled{
@@ -351,10 +352,8 @@ height: 0;
            data-social="instagram">
             <div class="filled"></div>
 
-            <!-- SVG Instagram -->
-            <svg viewBox="0 0 24 24" fill="currentColor">
-                <path d="M7 2C4.24 2 2 4.24 2 7v10c0 2.76 2.24 5 5 5h10c2.76 0 5-2.24 5-5V7c0-2.76-2.24-5-5-5H7zm0 2h10c1.65 0 3 1.35 3 3v10c0 1.65-1.35 3-3 3H7c-1.65 0-3-1.35-3-3V7c0-1.65 1.35-3 3-3zm5 2.5A5.5 5.5 0 1 0 17.5 12 5.51 5.51 0 0 0 12 6.5zm0 2A3.5 3.5 0 1 1 8.5 12 3.5 3.5 0 0 1 12 8.5zm5.75-2.63a1.13 1.13 0 1 0 1.13 1.13 1.13 1.13 0 0 0-1.13-1.13z"/>
-            </svg>
+            <!-- Instagram -->
+<i class="fa-brands fa-instagram"></i>
         </a>
     </div>
 
