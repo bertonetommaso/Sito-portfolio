@@ -172,6 +172,50 @@ path {
     100% { transform: rotate(360deg) scale(1); }
 }
 .hidden-filter { position: absolute; width: 0; height: 0; }
+
+/* ========================================= */
+/* SCRITTA FINALE (MONUMENTAL)               */
+/* ========================================= */
+.final-title-container {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100%;
+    text-align: center;
+    z-index: 5;
+    pointer-events: auto;
+}
+
+.monumental-text {
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 700;
+    font-size: 130px; /* Misura gigante */
+    line-height: 1;
+    letter-spacing: -3px;
+    color: #000000;
+    margin: 0;
+    white-space: nowrap;
+    cursor: default;
+}
+
+/* Effetto di hover sulla singola lettera */
+.char {
+    display: inline-block;
+    transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.char:hover {
+    transform: translateY(-8px) rotate(3deg);
+    color: #111;
+}
+
+/* Adattamento testo per schermi piccoli */
+@media (max-width: 1200px) {
+    .monumental-text { font-size: 80px; }
+}
+@media (max-width: 768px) {
+    .monumental-text { font-size: 40px; }
+}
 </style>
 </head>
 <body>
@@ -244,9 +288,7 @@ path {
 
             <div class="content-block" style="top: 800px;"> 
                 
-                <!-- La scatola torna com'era (ho tolto l'height 260px) -->
                 <div class="photo-box" style="cursor: default;">
-                    <!-- Ho aggiunto style="object-fit: contain;" all'immagine -->
                     <img src="foto-profilo.jpeg.jpg" alt="Tommaso Bertone" style="object-fit: contain;">
                 </div>
                 
@@ -301,6 +343,10 @@ path {
                 <div class="text-box text-align-right">
                     <p class="project-title"><em>building</em> Vårkumla</p>
                 </div>
+            </div>
+
+            <div class="final-title-container" style="top: 5620px;">
+                <h1 class="monumental-text" id="final-text">LET'S KEEP IN TOUCH!</h1>
             </div>
 
         </div> </div> </div> 
@@ -483,6 +529,19 @@ btnPrev.addEventListener('click', () => {
     if(currentSlideIndex > 0) { currentSlideIndex--; } else { currentSlideIndex = maxSlides; }
     updateModalContent();
 });
+
+// 5. ANIMAZIONE TESTO FINALE ("LET'S KEEP IN TOUCH!")
+const finalText = document.getElementById('final-text');
+if(finalText) {
+    const text = finalText.innerText;
+    finalText.innerHTML = '';
+    text.split('').forEach(c => {
+        const s = document.createElement('span');
+        s.className = 'char';
+        s.innerHTML = c === ' ' ? '&nbsp;' : c;
+        finalText.appendChild(s);
+    });
+}
 </script>
 </body>
 </html>
