@@ -749,6 +749,120 @@ mailButton.addEventListener("click", async (e)=>{
     }
 
 });
+
+// ==========================================
+// DATABASE DELLE SLIDES (IL TUO CAROSELLO)
+// ==========================================
+// Qui inserirai i testi e le foto per le 5 slide di ogni progetto.
+const portfolioDatabase = {
+    "viote": [
+        { img: "viote.jpg", title: "Viote - 1/5", text: "La foto preview. Breve introduzione al progetto Viote e alla sua concezione." },
+        { img: "foto2.jpg", title: "Viote - 2/5", text: "Analisi dei materiali e primi schizzi di sviluppo." },
+        { img: "foto3.jpg", title: "Viote - 3/5", text: "Modellazione 3D e prototipazione." },
+        { img: "foto4.jpg", title: "Viote - 4/5", text: "Dettagli tecnici e funzionalità." },
+        { img: "foto5.jpg", title: "Viote - 5/5", text: "Scatti finali del prodotto ambientato." }
+    ],
+    "clivio": [
+        { img: "clivio.jpg", title: "Clivio - 1/5", text: "Preview di Clivio. Un progetto basato sull'ergonomia." },
+        { img: "foto2.jpg", title: "Clivio - 2/5", text: "Slide 2..." },
+        { img: "foto3.jpg", title: "Clivio - 3/5", text: "Slide 3..." },
+        { img: "foto4.jpg", title: "Clivio - 4/5", text: "Slide 4..." },
+        { img: "foto5.jpg", title: "Clivio - 5/5", text: "Slide 5..." }
+    ]
+    // Aggiungi qui "cavea": [ ... ], "toori": [ ... ] ecc!
+};
+
+// ==========================================
+// LOGICA DEL MODAL E DEL CAROSELLO
+// ==========================================
+const modal = document.getElementById('projectModal');
+const modalImg = document.getElementById('modalImg');
+const modalTitle = document.getElementById('modalTitle');
+const modalText = document.getElementById('modalText');
+const btnClose = document.getElementById('modalClose');
+const btnPrev = document.getElementById('modalPrev');
+const btnNext = document.getElementById('modalNext');
+
+let currentProject = "";
+let currentSlideIndex = 0;
+
+// 1. Aprire il modal cliccando le foto
+document.querySelectorAll('.photo-box').forEach(box => {
+    box.addEventListener('click', () => {
+        const projectId = box.getAttribute('data-project');
+        
+        // Se il progetto esiste nel database, aprilo
+        if(portfolioDatabase[projectId]) {
+            currentProject = projectId;
+            currentSlideIndex = 0; // Parti sempre dalla prima slide
+            updateModalContent();
+            
+            modal.classList.add('active');
+            lenis.stop(); // Ferma lo scroll del sito dietro al modal
+        }
+    });
+});
+
+// 2. Chiudere il modal
+btnClose.addEventListener('click', () => {
+    modal.classList.remove('active');
+    lenis.start(); // Riattiva lo scroll
+});
+
+// Chiudere cliccando sullo sfondo scuro
+modal.addEventListener('click', (e) => {
+    if(e.target === modal) {
+        modal.classList.remove('active');
+        lenis.start();
+    }
+});
+
+// 3. Funzione per aggiornare l'immagine e i testi
+function updateModalContent() {
+    const slideData = portfolioDatabase[currentProject][currentSlideIndex];
+    modalImg.src = slideData.img;
+    modalTitle.textContent = slideData.title;
+    modalText.innerHTML = slideData.text; // innerHTML permette di usare <br> nei testi!
+}
+
+// 4. Cambiare Slide (Avanti)
+btnNext.addEventListener('click', () => {
+    const maxSlides = portfolioDatabase[currentProject].length - 1;
+    if(currentSlideIndex < maxSlides) {
+        currentSlideIndex++;
+    } else {
+        currentSlideIndex = 0; // Torna alla prima slide se sei alla fine
+    }
+    updateModalContent();
+});
+
+// 5. Cambiare Slide (Indietro)
+btnPrev.addEventListener('click', () => {
+    const maxSlides = portfolioDatabase[currentProject].length - 1;
+    if(currentSlideIndex > 0) {
+        currentSlideIndex--;
+    } else {
+        currentSlideIndex = maxSlides; // Vai all'ultima slide se sei alla prima
+    }
+    updateModalContent();
+});
+  
+<div class="modal-overlay" id="projectModal">
+    
+    <div class="modal-nav prev-btn" id="modalPrev"><i class="fa-solid fa-chevron-left"></i></div>
+    <div class="modal-nav next-btn" id="modalNext"><i class="fa-solid fa-chevron-right"></i></div>
+    <div class="modal-close" id="modalClose"><i class="fa-solid fa-xmark"></i></div>
+    
+    <div class="modal-card">
+        <div class="modal-image-col">
+            <img src="" id="modalImg" alt="Slide">
+        </div>
+        <div class="modal-text-col">
+            <h3 id="modalTitle">Titolo</h3>
+            <p id="modalText">Descrizione...</p>
+        </div>
+    </div>
+</div>
   
 </script>
 </body>
