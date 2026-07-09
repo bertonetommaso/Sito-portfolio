@@ -124,24 +124,21 @@ font-family: 'DM Sans', sans-serif;
 flex-direction: row-reverse;
 }
 
-/* Stile della Foto (Il tuo riquadro nero) */
-/* Stile della Foto */
-/* Stile della Foto */
+/* Stile della Foto (Blobby) */
 .photo-box {
-flex: 1; 
-background: #222; 
-height: 360px; /* <--- Abbassato da 450px a 360px! */
-border-radius: 8px;
-overflow: hidden;
-/* Un po' di ombra opzionale per staccarla dallo sfondo */
-box-shadow: 0 10px 30px rgba(0,0,0,0.05); 
+    flex: 1; 
+    background: #222; 
+    height: 360px; 
+    overflow: hidden;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.05); 
+    /* Questa riga trasforma il rettangolo in un blob animato! */
+    animation: morph 8s ease-in-out infinite; 
 }
 
-/* Quando inserirai la foto vera (`img`), riempirà il riquadro senza deformarsi */
 .photo-box img {
-width: 100%;
-height: 100%;
-object-fit: cover;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
 }
 
 /* Stile del Testo */
@@ -443,63 +440,73 @@ scroll down to<br>get to know me!
               "/>
 </svg>
 <div class="content-block" style="top: 800px;"> 
+                <div class="photo-box" style="animation-delay: 0s;">
+                    <img src="foto-profilo.jpg" alt="Ritratto di Tommaso Bertone">
+                </div>
+                <div class="text-box" style="width: 780px; flex-shrink: 0; margin-left: -70px; margin-top: -35px;">
+                    <p>22 year, studying Product Design at Politecnico di Torino.<br>
+                    Keen to upgrade my software and practical skills, I've always been open to innovations and challenges to better myself.<br>
+                    Through my projects I aim to convey functionality and a balanced aesthetics.</p>
+                </div>
+            </div>
 
-<div c
-<img src="foto-profilo.jpg" alt="Ritratto di Tommaso Bertone">
-</div>
+            <div class="transition-text" style="top: 1350px;">
+                enjoy these projects of mine!
+            </div>
 
-<!-- Ho cambiato margin-left in -80px per tirarlo con forza verso sinistra -->
-<div class="text-box" style="width: 780px; flex-shrink: 0; margin-left: -70px; margin-top: -35px;">
-<p>22 year, studying Product Design at Politecnico di Torino.<br>
-Keen to upgrade my software and practical skills, I've always been open to innovations and challenges to better myself.
-<br>Through my projects I aim to convey functionality and a balanced aesthetics.</p>
-</div>
+            <div class="content-block reverse" style="top: 1700px;"> 
+                <div class="text-box">
+                    <p class="project-title">Viote</p>
+                </div>
+                <div class="photo-box" style="animation-delay: -1s;">
+                    <img src="viote.jpg" alt="Viote">
+                </div>
+            </div>
 
-</div>
+            <div class="content-block" style="top: 2600px;"> 
+                <div class="text-box">
+                    <p class="project-title">Clivio</p>
+                </div>
+                <div class="photo-box" style="animation-delay: -2s;">
+                    <img src="clivio.jpg" alt="Clivio">
+                </div>
+            </div>
 
-<div class="transition-text" style="top: 1350px;">
-enjoy these projects of mine!
-</div>
-
-<div class="content-block reverse" style="top: 1700px;"> 
-<div class="project-title"><p>Viote</p></div>
-<div c</div>
-</div>
-
-
-<div class="content-block" style="top: 2600px;"> 
-<div class="text-box">
-<p class="project-title">Clivio</p>
-</div>
-<div c</div>
-</div>
-
-<div class="content-block" style="top: 3400px;"> 
-<div c</div>
-<div class="text-box text-align-right">
-<p class="project-title">Toori</p>
-</div>
-</div> <div class="content-block cavea-layout" style="top: 4070px;"> 
-<div c</div>
-<div class="text-box">
-<p class="project-title">Cavea</p>
-</div>
-
-</div> <div class="content-block" style="top: 4730px;"> 
-<div class="photo-box">
-    <img src="prova.jpg" alt="Nome del progetto">
-</div>
-<div class="text-box text-align-right">
-<p class="project-title">Nook</p>
-</div>
-
-</div> <div class="content-block" style="top: 5130px;"> 
-<div class="photo-box"></div>
-<div class="text-box text-align-right">
-<p class="project-title"><em>building</em> Vårkumla</p>
-</div>
-
-</div>
+            <div class="content-block" style="top: 3400px;"> 
+                <div class="photo-box" style="animation-delay: -3s;">
+                    <img src="toori.jpg" alt="Toori">
+                </div>
+                <div class="text-box text-align-right">
+                    <p class="project-title">Toori</p>
+                </div>
+            </div> 
+            
+            <div class="content-block cavea-layout" style="top: 4070px;"> 
+                <div class="text-box">
+                    <p class="project-title">Cavea</p>
+                </div>
+                <div class="photo-box" style="animation-delay: -4s;">
+                    <img src="cavea.jpg" alt="Cavea">
+                </div>
+            </div> 
+            
+            <div class="content-block" style="top: 4730px;"> 
+                <div class="photo-box" style="animation-delay: -5s;">
+                    <img src="prova.jpg" alt="Nook">
+                </div>
+                <div class="text-box text-align-right">
+                    <p class="project-title">Nook</p>
+                </div>
+            </div> 
+            
+            <div class="content-block" style="top: 5130px;"> 
+                <div class="photo-box" style="animation-delay: -6s;">
+                    <img src="varkumla.jpg" alt="Varkumla">
+                </div>
+                <div class="text-box text-align-right">
+                    <p class="project-title"><em>building</em> Vårkumla</p>
+                </div>
+            </div>
 
 </div> 
 </div>
