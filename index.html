@@ -367,18 +367,26 @@ enjoy these projects of mine!
 <script src="https://unpkg.com/@studio-freight/lenis@1.0.34/dist/lenis.min.js"></script>
 
 <script>
-// INIZIALIZZAZIONE LENIS (SMOOTH SCROLL)
-const lenis = new Lenis({
-duration: 1.5, 
-easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)), 
-direction: 'vertical',
-smooth: true
-});
+window.addEventListener("load", () => {
 
-function raf(time) {
-lenis.raf(time);
-requestAnimationFrame(raf);
-}
+    const lenis = new Lenis({
+        duration: 1.5,
+        easing: t => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+        smooth: true
+    });
+
+    function raf(time){
+        lenis.raf(time);
+        requestAnimationFrame(raf);
+    }
+
+    requestAnimationFrame(raf);
+
+    // qui tutto il resto:
+    // gsap.registerPlugin(...)
+    // ScrollTrigger.create(...)
+    // ecc.
+});
 requestAnimationFrame(raf);
 
 gsap.registerPlugin(ScrollTrigger);
