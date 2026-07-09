@@ -323,20 +323,23 @@ enjoy these projects of mine!
             </div>
 
             <div class="content-block" style="top: 3400px;"> 
-                <div class="photo-box"></div>
-                <div class="text-box">
-                    <p class="project-title">Toori</p>
-                </div>
-            <div class="content-block cavea-layout" style="top: 3600px;"> 
-                
-                <div class="photo-box">
-                    </div>
+    <div class="photo-box"></div>
+    <div class="text-box">
+        <p class="project-title">Toori</p>
+    </div>
+</div> <div class="content-block cavea-layout" style="top: 3600px;"> 
+    <div class="photo-box"></div>
+    <div class="text-box">
+        <p class="project-title">Cavea</p>
+    </div>
+</div> ```
 
-                <div class="text-box">
-                    <p class="project-title">Cavea</p>
-                </div>
-                
-            </div>
+**Cosa ho fatto:**
+1. Ho chiuso il `div` di Toori subito dopo il suo testo.
+2. Ho aperto il `div` di Cavea come elemento separato (fratello del primo, non figlio).
+3. Ho eliminato i tag di chiusura extra che c'erano in fondo al tuo snippet, che creavano solo confusione.
+
+Ora, essendo due blocchi separati e non uno dentro l'altro, il browser li posizionerà correttamente in base ai loro valori `top`!
             </div>
 
         </div> 
