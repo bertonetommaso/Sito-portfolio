@@ -123,6 +123,12 @@ justify-content: space-between;
 font-family: 'DM Sans', sans-serif;
 }
 
+    /* MODIFICATORE: Stacca i progetti dalla linea arancione */
+    .content-block.offset-layout {
+        width: 1160px; /* Lo stringiamo (prima era 1320) */
+        margin-left: -580px; /* Ricalcoliamo il centro perfetto (-580 è la metà di 1160) */
+    }
+    
     /* La magia per invertire i lati nel secondo progetto */
 .content-block.reverse {
 flex-direction: row-reverse;
@@ -309,16 +315,27 @@ height: 0;
                 enjoy these projects of mine!
             </div>
                 
-            <div class="content-block reverse" style="top: 1700px;"> 
+            <div class="content-block reverse offset-layout" style="top: 1700px;"> 
                 <div class="project-title"><p>Viote.</p></div>
                 <div class="photo-box"></div>
             </div>
                 
-            <div class="content-block" style="top: 2600px;"> 
+            <div class="content-block reverse offset-layout" style="top: 2600px;"> 
                 
                 <div class="text-box">
                     <p class="project-title">Clivio</p>
                 </div>
+
+                <div class="content-block" style="top: 3600px;"> 
+                
+                <div class="photo-box">
+                </div>
+
+                <div class="content-block offset-layout" style="top: 3600px;">
+                    <p class="project-title">Cavea</p>
+                </div>
+                
+            </div>
                 
                 <div class="photo-box">
                     </div>
