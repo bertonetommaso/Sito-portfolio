@@ -222,14 +222,24 @@ color: #111;
 .monumental-text { font-size: 40px; }
 }
 
-    /* ========================================= */
+/* ========================================= */
 /* ADATTAMENTO MOBILE (TELEFONI)             */
 /* ========================================= */
 @media (max-width: 768px) {
-    /* Schiaccia la linea orizzontalmente senza toccare l'altezza */
+    /* Stringe la linea col transform: mantiene il centro esatto e lo spessore costante */
     .line-svg {
-        width: 100vw !important;
-        margin-left: -50vw !important;
+        width: 1600px !important;
+        margin-left: -800px !important;
+        transform: scaleX(0.25);
+        transform-origin: center top;
+    }
+
+    /* Centra e rimpicciolisce il blob */
+    .blob {
+        width: 80px !important;
+        height: 80px !important;
+        margin-top: -40px !important;
+        margin-left: -40px !important;
     }
 
     /* Centra i testi ed evita che sballino la pagina */
