@@ -47,11 +47,11 @@ body, html {
 .animated-line-container { z-index: 1; }
 path {
     stroke: #f05a28; 
-    stroke-width: 24px; /* Ottimizzato per il vector-effect */
+    stroke-width: 24px; 
     fill: none; 
     stroke-linecap: round; 
     stroke-linejoin: round; 
-    vector-effect: non-scaling-stroke; /* Mantiene lo spessore perfetto su PC e Telefono */
+    vector-effect: non-scaling-stroke; 
 }
 
 /* CONTENUTI DEI PROGETTI */
@@ -217,13 +217,12 @@ path {
 /* ADATTAMENTO MOBILE (TELEFONI)             */
 /* ========================================= */
 @media (max-width: 768px) {
-    /* Scala la traccia arancione per mantenerla centrata nel telefono */
+    /* Adatta in larghezza la traccia arancione SOLO su Mobile */
     .line-svg {
         width: 320px !important;
         margin-left: -160px !important;
     }
     
-    /* Riduce il blob iniziale */
     .blob {
         width: 80px !important;
         height: 80px !important;
@@ -231,7 +230,6 @@ path {
         margin-left: -40px !important;
     }
     
-    /* Disposizione in colonna: Le foto dominano in alto, il testo passa sotto */
     .content-block {
         width: 90vw !important;
         margin-left: -45vw !important;
@@ -241,17 +239,16 @@ path {
     .photo-box {
         width: 100% !important;
         height: 280px !important;
-        order: 1; /* Costringe la foto a stare in cima */
+        order: 1; 
     }
     .text-box {
         width: 100% !important;
         margin: 0 !important;
         text-align: center !important;
-        order: 2; /* Costringe il testo a stare in basso */
+        order: 2; 
     }
     .text-align-right { text-align: center !important; }
 
-    /* Testi principali responsivi */
     .hero-title {
         width: 90vw;
         margin-left: 0 !important;
@@ -268,7 +265,6 @@ path {
     .project-title { font-size: 42px !important; }
     .monumental-text { font-size: 8vw !important; }
 
-    /* Elementi UI per dita */
     .home-btn { top: 20px !important; left: 20px !important; }
     .social-sidebar {
         width: 90vw !important;
@@ -280,7 +276,6 @@ path {
         height: 45px !important;
     }
 
-    /* Modal Carosello per Telefono */
     .modal-card {
         width: 90vw !important;
         height: 80vh !important;
@@ -356,13 +351,11 @@ path {
 
             <div class="blob"></div>
             
-            <!-- Aggiunto preserveAspectRatio per non distorcere le misure su Mobile -->
-            <svg class="line-svg" viewBox="0 0 2000 8000" preserveAspectRatio="none">
+            <svg class="line-svg" viewBox="0 0 2000 8000">
                 <path d="M 1000 150 V 180" vector-effect="non-scaling-stroke"/>
             </svg>
 
-            <!-- Aggiunto preserveAspectRatio per non distorcere le misure su Mobile -->
-            <svg class="line-svg animated-line-container" viewBox="0 0 2000 8000" preserveAspectRatio="none">
+            <svg class="line-svg animated-line-container" viewBox="0 0 2000 8000">
                 <path id="animatedLine" vector-effect="non-scaling-stroke" d="
                       M1000,150v731.09c0,11.05-8.95,20-20,20H225.09c-11.05,0-20,8.95-20,20v373.62c0,11.05,8.95,20,20,20h1555.23c11.05,0,20,8.95,20,20v373.62c0,11.05-8.95,20-20,20H637.32c-11.05,0-20,8.95-20,20v373.62c0,11.05,8.95,20,20,20h754.91c11.05,0,20,8.95,20,20v373.62c0,11.05-8.95,20-20,20H225.09c-11.05,0-20,8.95-20,20v373.62c0,11.05,8.95,20,20,20h1555.23c11.05,0,20,8.95,20,20v787.23c0,11.05-8.95,20-20,20h-348.09c-11.05,0-20,8.95-20,20v373.62c0,11.05-8.95,20-20,20H225.09c-11.05,0-20,8.95-20,20v373.62c0,11.05,8.95,20,20,20h1555.23c11.05,0,20,8.95,20,20v373.62c0,11.05-8.95,20-20,20h-348.09c-11.05,0-20,8.95-20,20v373.62c0,11.05,8.95,20,20,20h348.09c11.05,0,20,8.95,20,20v373.62c0,11.05-8.95,20-20,20H225.09c-11.05,0-20,8.95-20,20v373.62c0,11.05,8.95,20,20,20h769.69c11.05,0,20,8.95,20,20v373.62c0,11.05-8.95,20-20,20h-357.46c-11.05,0-20,8.95-20,20v373.62c0,11.05,8.95,20,20,20h1143c11.05,0,20,8.95,20,20v373.62c0,11.05-8.95,20-20,20H205.09
                   "/>
@@ -416,7 +409,6 @@ path {
                 <div class="text-box text-align-right"><p class="project-title">Nook</p></div>
             </div> 
             
-            <!-- ULTIMO PROGETTO (VARKUMLA) -->
             <div class="content-block" style="top: 5130px;"> 
                 <div class="photo-box" data-project="varkumla">
                     <img src="varkumla.jpeg" alt="Varkumla">
@@ -426,17 +418,11 @@ path {
                 </div>
             </div>
 
-        </div> <!-- ⚠️ CHIUSURA DEL GOOEY-GROUP -->
-
-        <!-- SCRITTA FINALE -->
-        <div class="final-title-container" style="top: 5890px;">
+        </div> <div class="final-title-container" style="top: 5980px;">
             <h1 class="monumental-text" id="final-text">LET'S KEEP IN TOUCH!</h1>
         </div>
 
-    </div> <!-- Chiude la .camera -->
-</div> <!-- Chiude il .fixed-viewport --> 
-    
-<div class="modal-overlay" id="projectModal">
+    </div> </div> <div class="modal-overlay" id="projectModal">
     <div class="modal-nav prev-btn" id="modalPrev"><i class="fa-solid fa-chevron-left"></i></div>
     <div class="modal-nav next-btn" id="modalNext"><i class="fa-solid fa-chevron-right"></i></div>
     <div class="modal-close" id="modalClose"><i class="fa-solid fa-xmark"></i></div>
