@@ -223,21 +223,20 @@ color: #111;
 }
 
 @media (max-width: 768px) {
-    /* Il "trucco" per stringere la linea mantenendo lo spessore perfetto */
+    /* Si affida all'HTML per schiacciarsi, mantenendo la posizione perfetta */
     .line-svg {
-        width: 1600px !important;
-        margin-left: -800px !important;
-        transform: scaleX(0.25);
-        transform-origin: center top;
+        width: 100vw !important;
+        margin-left: -50vw !important;
+        transform: none !important; /* Rimuovi eventuali transform residui */
     }
 
-    /* Centra geometricamente il blob arancione */
+    /* Forza il centro esatto per il telefono */
     .blob {
         width: 80px !important;
         height: 80px !important;
         margin-top: -40px !important;
         margin-left: -40px !important;
-        left: 50% !important;
+        left: 50% !important; 
     }
 
     /* Centra i testi volanti */
@@ -347,12 +346,12 @@ scroll down to<br>get to know me!
 <div class="gooey-group" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;">
 
 <div class="blob"></div>
-<svg class="line-svg" viewBox="0 0 2000 8000">
-    <path d="M 1000 150 V 180" />
+<svg class="line-svg" viewBox="0 0 2000 8000" preserveAspectRatio="none">
+    <path d="M 1000 150 V 180" vector-effect="non-scaling-stroke" />
 </svg>
 
-<svg class="line-svg animated-line-container" viewBox="0 0 2000 8000">
-<path id="animatedLine" d="
+<svg class="line-svg animated-line-container" viewBox="0 0 2000 8000" preserveAspectRatio="none">
+    <path id="animatedLine" vector-effect="non-scaling-stroke" d="
                      M1000,150v731.09c0,11.05-8.95,20-20,20H225.09c-11.05,0-20,8.95-20,20v373.62c0,11.05,8.95,20,20,20h1555.23c11.05,0,20,8.95,20,20v373.62c0,11.05-8.95,20-20,20H637.32c-11.05,0-20,8.95-20,20v373.62c0,11.05,8.95,20,20,20h754.91c11.05,0,20,8.95,20,20v373.62c0,11.05-8.95,20-20,20H225.09c-11.05,0-20,8.95-20,20v373.62c0,11.05,8.95,20,20,20h1555.23c11.05,0,20,8.95,20,20v787.23c0,11.05-8.95,20-20,20h-348.09c-11.05,0-20,8.95-20,20v373.62c0,11.05-8.95,20-20,20H225.09c-11.05,0-20,8.95-20,20v373.62c0,11.05,8.95,20,20,20h1555.23c11.05,0,20,8.95,20,20v373.62c0,11.05-8.95,20-20,20h-348.09c-11.05,0-20,8.95-20,20v373.62c0,11.05,8.95,20,20,20h348.09c11.05,0,20,8.95,20,20v373.62c0,11.05-8.95,20-20,20H225.09c-11.05,0-20,8.95-20,20v373.62c0,11.05,8.95,20,20,20h769.69c11.05,0,20,8.95,20,20v373.62c0,11.05-8.95,20-20,20h-357.46c-11.05,0-20,8.95-20,20v373.62c0,11.05,8.95,20,20,20h1143c11.05,0,20,8.95,20,20v373.62c0,11.05-8.95,20-20,20H205.09
                  "/>
 </svg>
@@ -470,10 +469,19 @@ const pathLength = path.getTotalLength();
 gsap.set(path, { strokeDasharray: pathLength, strokeDashoffset: pathLength });
 
 function updateCamera(progress) {
-const svgElement = document.querySelector('.animated-line-container');
-const svgHeight = svgElement.getBoundingClientRect().height || 6400; 
-const scaleRatio = svgHeight / 8000; 
-const drawLength = progress * pathLength;
+    // 1. SCROLL CONTINUO: La telecamera scende in modo lineare e non si ferma mai sui tratti orizzontali
+    const maxScrollY = 6400 - window.innerHeight;
+    const cameraY = -(progress * maxScrollY);
+
+    // 2. RITARDO LINEA: Usiamo una curva di potenza (1.4) per rallentare il disegno 
+    // iniziale della traccia arancione, così non andrà mai "in anticipo" rispetto alla tua discesa.
+    const lineProgress = Math.pow(progress, 1.4); 
+    const drawLength = lineProgress * pathLength;
+
+    // Applica i movimenti
+    gsap.to(path, { strokeDashoffset: pathLength - drawLength, ease: "power2.out", duration: 0.1 });
+    gsap.to(camera, { x: 0, y: cameraY, ease: "none", duration: 0.1 });
+}
 
 gsap.to(path, { strokeDashoffset: pathLength - drawLength, ease: "power2.out", duration: 0.1 });
 const point = path.getPointAtLength(drawLength);
