@@ -7,69 +7,70 @@
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
 <style>
-/* RESET BASE E SCROLL */
+/* RESET BASE */
 body, html {
-    margin: 0; padding: 0; background-color: #fcfcfc; overflow-x: hidden;
-}
-
-/* CONTENITORE PRINCIPALE (Sostituisce la vecchia telecamera bloccata) */
-.main-wrapper {
-    position: relative;
-    width: 100%;
-    overflow: hidden;
-    background-color: #fcfcfc;
-}
-.content-container {
-    position: relative;
-    width: 100%;
-    height: 6400px; /* Altezza totale del documento */
+margin: 0; padding: 0; background-color: #fcfcfc; overflow-x: hidden;
 }
 
 /* TASTO HOME FISSO */
 .home-btn {
-    position: fixed; top: 40px; left: 40px; font-family: 'DM Sans', sans-serif;
-    font-weight: 300; font-size: 16px; letter-spacing: 1px; color: #333;
-    cursor: pointer; z-index: 99999; pointer-events: auto; transition: color 0.3s ease;
+position: fixed; top: 40px; left: 40px; font-family: 'DM Sans', sans-serif;
+font-weight: 300; font-size: 16px; letter-spacing: 1px; color: #333;
+cursor: pointer; z-index: 99999; pointer-events: auto; transition: color 0.3s ease;
 }
 .home-btn:hover { color: #f05a28; }
 
+/* AREA DI SCROLL */
+.scroll-area { height: 10000px; }
+
+/* VIEWPORT FISSO E TELECAMERA */
+.fixed-viewport {
+position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+pointer-events: none; overflow: hidden;
+}
+.camera {
+position: absolute; top: 0; left: 0; width: 100%; height: 100%; will-change: transform;
+}
+
 /* GRUPPO EFFETTO GOOEY E BLOB */
-.gooey-group { position: relative; width: 100%; height: 100%; filter: url('#goo'); z-index: 2; }
+.gooey-group { position: relative; filter: url('#goo'); z-index: 2; }
 .blob {
-    position: absolute; width: 120px; height: 120px; background: #f05a28;
-    top: 120px; left: 50%; margin-top: -60px; margin-left: -60px; 
-    animation: morph 8s ease-in-out infinite, spin 20s linear infinite;
+position: absolute; width: 120px; height: 120px; background: #f05a28;
+top: 120px; left: 50%; margin-top: -60px; margin-left: -60px; 
+animation: morph 8s ease-in-out infinite, spin 20s linear infinite;
 }
 
 /* TELA SVG E TRACCIA ANIMATA */
 .line-svg {
-    position: absolute; top: 0; left: 50%; margin-left: -800px; width: 1600px; height: 6400px;
-    /* transition opzionale per il resize */
-    transform-origin: center top; 
+position: absolute; top: 0; left: 50%; margin-left: -800px; width: 1600px; height: 6400px;
 }
 .animated-line-container { z-index: 1; }
 path {
-    stroke: #f05a28; stroke-width: 30px; fill: none; stroke-linecap: round; stroke-linejoin: round; 
-    vector-effect: non-scaling-stroke; /* Impedisce alla linea di assottigliarsi su telefono */
+    stroke: #f05a28; 
+    stroke-width: 30; 
+    fill: none; 
+    stroke-linecap: round; 
+    stroke-linejoin: round; 
+    vector-effect: non-scaling-stroke; /* INSERISCI QUESTO */
 }
 
 /* CONTENUTI DEI PROGETTI */
 .content-block {
-    position: absolute; left: 50%; margin-left: -660px; width: 1320px; 
-    display: flex; align-items: center; justify-content: space-between;
-    gap: 80px; z-index: 5; font-family: 'DM Sans', sans-serif; pointer-events: auto;
+position: absolute; left: 50%; margin-left: -660px; width: 1320px; 
+display: flex; align-items: center; justify-content: space-between;
+gap: 80px; z-index: 5; font-family: 'DM Sans', sans-serif; pointer-events: auto;
 }
 .content-block.reverse { flex-direction: row-reverse; }
 
 /* STILE DELLA FOTO (Hover e Cursore) */
 .photo-box {
-    flex: 1; background: #222; height: 360px; border-radius: 8px; overflow: hidden;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.05); 
-    cursor: pointer; transition: transform 0.4s cubic-bezier(0.2, 1, 0.3, 1), box-shadow 0.4s ease;
+flex: 1; background: #222; height: 360px; border-radius: 8px; overflow: hidden;
+box-shadow: 0 10px 30px rgba(0,0,0,0.05); 
+cursor: pointer; transition: transform 0.4s cubic-bezier(0.2, 1, 0.3, 1), box-shadow 0.4s ease;
 }
 .photo-box:hover {
-    transform: scale(1.03); 
-    box-shadow: 0 20px 50px rgba(0,0,0,0.2); 
+transform: scale(1.03); 
+box-shadow: 0 20px 50px rgba(0,0,0,0.2); 
 }
 .photo-box img { width: 100%; height: 100%; object-fit: cover; }
 
@@ -77,187 +78,206 @@ path {
 .text-box { flex: 1; font-weight: 400; font-size: 18px; line-height: 1.8; color: #111; }
 .text-align-right { text-align: right; }
 .project-title {
-    font-weight: 300; font-size: 64px; line-height: 1.1; margin: 0 0 15px 0; 
-    color: #000000; letter-spacing: -1px; 
+font-weight: 300; font-size: 64px; line-height: 1.1; margin: 0 0 15px 0; 
+color: #000000; letter-spacing: -1px; 
 }
 
 /* TESTI VOLANTI E HERO */
 .intro-text {
-    position: absolute; top: -15px; left: 50%; transform: translateX(-50%); 
-    text-align: center; font-family: 'DM Sans', sans-serif; font-weight: 300; 
-    font-size: 20px; color: #000000; z-index: 10;
+position: absolute; top: -15px; left: 50%; transform: translateX(-50%); 
+text-align: center; font-family: 'DM Sans', sans-serif; font-weight: 300; 
+font-size: 20px; color: #000000; z-index: 10;
 }
 .transition-text {
-    position: absolute; left: 50%; margin-left: -650px; font-family: 'DM Sans', sans-serif;
-    font-weight: 400; font-size: 22px; color: #000000; z-index: 5;
+position: absolute; left: 50%; margin-left: -650px; font-family: 'DM Sans', sans-serif;
+font-weight: 400; font-size: 22px; color: #000000; z-index: 5;
 }
 .hero-title {
-    position: absolute; left: 50%; margin-left: -50px; transform: translateX(-100%); 
-    text-align: center; font-family: 'DM Sans', sans-serif; color: #000000; z-index: 5;
+position: absolute; left: 50%; margin-left: -50px; transform: translateX(-100%); 
+text-align: center; font-family: 'DM Sans', sans-serif; color: #000000; z-index: 5;
 }
 .hero-title h1 { font-weight: 300; font-size: 180px; margin: 0; line-height: 0.75; letter-spacing: -4px; }
 .hero-title h2 { font-weight: 300; font-size: 42px; margin: 15px 0 0 0; letter-spacing: -1px; }
 
 /* SIDEBAR SOCIAL */
 .social-sidebar{
-    position:fixed; left:50%; bottom:40px; transform:translateX(-50%);
-    display:flex; flex-direction:row; gap:22px; z-index:9999; pointer-events: auto;
+position:fixed; left:50%; bottom:40px; transform:translateX(-50%);
+display:flex; flex-direction:row; gap:22px; z-index:9999; pointer-events: auto;
 }
 .icon-content{ position:relative; }
 .tooltip{
-    position:absolute; top:50px; left:50%; transform:translateX(-50%); background:#111;
-    color:white; padding:6px 12px; border-radius:20px; font-size:13px; opacity:0;
-    transition:.3s; pointer-events:none; white-space:nowrap; font-family:'DM Sans',sans-serif;
+position:absolute; top:50px; left:50%; transform:translateX(-50%); background:#111;
+color:white; padding:6px 12px; border-radius:20px; font-size:13px; opacity:0;
+transition:.3s; pointer-events:none; white-space:nowrap; font-family:'DM Sans',sans-serif;
 }
 .icon-content:hover .tooltip{ opacity:1; }
 .icon-content a{
-    position:relative; overflow:hidden; display:flex; justify-content:center; align-items:center;
-    width:52px; height:52px; border-radius:16px; background:#fff; color:#222;
-    box-shadow:0 5px 20px rgba(0,0,0,.06); transition: transform .25s ease, box-shadow .25s ease, color .25s ease;
+position:relative; overflow:hidden; display:flex; justify-content:center; align-items:center;
+width:52px; height:52px; border-radius:16px; background:#fff; color:#222;
+box-shadow:0 5px 20px rgba(0,0,0,.06); transition: transform .25s ease, box-shadow .25s ease, color .25s ease;
 }
 .icon-content a:hover{ color:#fff; transform:translateY(-3px); box-shadow:0 12px 30px rgba(0,0,0,.12); }
 .icon-content i{ position:relative; z-index:2; font-size:24px; }
 .filled{
-    position:absolute; left:0; bottom:0; width:100%; height:0; transition:.3s;
+position:absolute; left:0; bottom:0; width:100%; height:0; transition:.3s;
 }
 .icon-content:hover .filled{ height:100%; }
 [data-social="instagram"] .filled, [data-social="linkedin"] .filled, 
 [data-social="mail"] .filled, [data-social="behance"] .filled { background:#f05a28; }
 
-/* MODAL / CAROSELLO */
+/* ========================================= */
+/* MODAL / CAROSELLO A SCHERMO INTERO        */
+/* ========================================= */
 .modal-overlay {
-    position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
-    background: rgba(15, 15, 15, 0.85); z-index: 9999999; 
-    display: flex; justify-content: center; align-items: center;
-    opacity: 0; pointer-events: none; transition: opacity 0.4s ease; backdrop-filter: blur(5px);
+position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+background: rgba(15, 15, 15, 0.85); z-index: 9999999; 
+display: flex; justify-content: center; align-items: center;
+opacity: 0; pointer-events: none; transition: opacity 0.4s ease; backdrop-filter: blur(5px);
 }
 .modal-overlay.active { opacity: 1; pointer-events: auto; }
 .modal-card {
-    width: 85vw; max-width: 1300px; height: 75vh; background: #fcfcfc; border-radius: 16px;
-    display: flex; overflow: hidden; box-shadow: 0 30px 80px rgba(0,0,0,0.4);
-    transform: scale(0.95); transition: transform 0.4s cubic-bezier(0.2, 1, 0.3, 1);
+width: 85vw; max-width: 1300px; height: 75vh; background: #fcfcfc; border-radius: 16px;
+display: flex; overflow: hidden; box-shadow: 0 30px 80px rgba(0,0,0,0.4);
+transform: scale(0.95); transition: transform 0.4s cubic-bezier(0.2, 1, 0.3, 1);
 }
 .modal-overlay.active .modal-card { transform: scale(1); }
 .modal-image-col { flex: 2; background: #e0e0e0; }
 .modal-image-col img { width: 100%; height: 100%; object-fit: cover; }
 .modal-text-col {
-    flex: 1; padding: 60px 50px; display: flex; flex-direction: column; 
-    justify-content: center; font-family: 'DM Sans', sans-serif;
+flex: 1; padding: 60px 50px; display: flex; flex-direction: column; 
+justify-content: center; font-family: 'DM Sans', sans-serif;
 }
 .modal-text-col h3 { font-weight: 300; font-size: 42px; margin: 0 0 20px 0; letter-spacing: -1px; }
 .modal-text-col p { font-weight: 400; font-size: 16px; line-height: 1.8; color: #444; }
 .modal-nav {
-    position: absolute; top: 50%; transform: translateY(-50%); font-size: 40px;
-    color: #fff; cursor: pointer; transition: color 0.3s, transform 0.3s;
+position: absolute; top: 50%; transform: translateY(-50%); font-size: 40px;
+color: #fff; cursor: pointer; transition: color 0.3s, transform 0.3s;
 }
 .modal-nav:hover { color: #f05a28; }
 .prev-btn { left: 4%; }
 .next-btn { right: 4%; }
 .modal-close {
-    position: absolute; top: 30px; right: 40px; font-size: 40px;
-    color: #fff; cursor: pointer; transition: color 0.3s;
+position: absolute; top: 30px; right: 40px; font-size: 40px;
+color: #fff; cursor: pointer; transition: color 0.3s;
 }
 .modal-close:hover { color: #f05a28; }
 
-/* ANIMAZIONI BLOB */
+/* ANIMAZIONI BLOB E FILTRO */
 @keyframes morph {
-    0%   { border-radius: 40% 60% 70% 30% / 40% 50% 60% 50%; }
-    20%  { border-radius: 60% 40% 30% 70% / 60% 30% 70% 40%; }
-    40%  { border-radius: 30% 70% 60% 40% / 50% 60% 30% 60%; }
-    60%  { border-radius: 70% 30% 40% 60% / 30% 70% 50% 40%; }
-    80%  { border-radius: 50% 50% 70% 30% / 70% 40% 60% 30%; }
-    100% { border-radius: 40% 60% 70% 30% / 40% 50% 60% 50%; }
+0%   { border-radius: 40% 60% 70% 30% / 40% 50% 60% 50%; }
+20%  { border-radius: 60% 40% 30% 70% / 60% 30% 70% 40%; }
+40%  { border-radius: 30% 70% 60% 40% / 50% 60% 30% 60%; }
+60%  { border-radius: 70% 30% 40% 60% / 30% 70% 50% 40%; }
+80%  { border-radius: 50% 50% 70% 30% / 70% 40% 60% 30%; }
+100% { border-radius: 40% 60% 70% 30% / 40% 50% 60% 50%; }
 }
 @keyframes spin {
-    0% { transform: rotate(0deg) scale(1); }
-    50% { transform: rotate(180deg) scale(1.05); } 
-    100% { transform: rotate(360deg) scale(1); }
+0% { transform: rotate(0deg) scale(1); }
+50% { transform: rotate(180deg) scale(1.05); } 
+100% { transform: rotate(360deg) scale(1); }
 }
 .hidden-filter { position: absolute; width: 0; height: 0; }
 
-/* SCRITTA FINALE (MONUMENTAL) */
-.final-title-container {
-    position: absolute; left: 50%; transform: translateX(-50%);
-    width: 100%; text-align: center; z-index: 5; pointer-events: auto;
-}
-.monumental-text {
-    font-family: 'DM Sans', sans-serif; font-weight: 700; font-size: 100px; 
-    line-height: 1; letter-spacing: -3px; color: #000000; margin: 0;
-    white-space: nowrap; cursor: default;
-}
-.char { display: inline-block; transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
-.char:hover { transform: translateY(-8px) rotate(3deg); color: #111; }
-
 /* ========================================= */
-/* ADATTAMENTO RESPONSIVE (SMARTPHONE)       */
+/* SCRITTA FINALE (MONUMENTAL)               */
+/* ========================================= */
+.final-title-container {
+position: absolute;
+left: 50%;
+transform: translateX(-50%);
+width: 100%;
+text-align: center;
+z-index: 5;
+pointer-events: auto;
+}
+
+.monumental-text {
+font-family: 'DM Sans', sans-serif;
+font-weight: 700;
+font-size: 100px; /* Misura gigante */
+line-height: 1;
+letter-spacing: -3px;
+color: #000000;
+margin: 0;
+white-space: nowrap;
+cursor: default;
+}
+
+/* Effetto di hover sulla singola lettera */
+.char {
+display: inline-block;
+transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.char:hover {
+transform: translateY(-8px) rotate(3deg);
+color: #111;
+}
+
+/* Adattamento testo per schermi piccoli */
+@media (max-width: 1200px) {
+.monumental-text { font-size: 80px; }
+}
+@media (max-width: 768px) {
+.monumental-text { font-size: 40px; }
+}
+
+    /* ========================================= */
+/* ADATTAMENTO MOBILE (TELEFONI)             */
 /* ========================================= */
 @media (max-width: 768px) {
-    /* Stringe la linea arancione per mantenerla visibile nello schermo stretto */
+    /* Schiaccia la linea orizzontalmente senza toccare l'altezza */
     .line-svg {
-        transform: scaleX(0.23); 
-    }
-    
-    .blob {
-        width: 80px !important; height: 80px !important;
-        margin-top: -40px !important; margin-left: -40px !important;
-    }
-    
-    /* Layout Verticale per i Progetti */
-    .content-block {
-        width: 88vw !important;
-        margin-left: -44vw !important;
-        flex-direction: column !important;
-        justify-content: center !important;
-        gap: 20px !important;
-    }
-    .content-block.reverse {
-        flex-direction: column !important;
+        width: 100vw !important;
+        margin-left: -50vw !important;
     }
 
-    /* Le Foto mantengono le proporzioni (16:9) e stanno sempre SOPRA */
+    /* Centra i testi ed evita che sballino la pagina */
+    .hero-title, .transition-text {
+        margin-left: 0 !important;
+        transform: translateX(-50%) !important;
+        width: 90vw !important;
+    }
+    .hero-title h1 { font-size: 80px !important; }
+    .hero-title h2 { font-size: 24px !important; }
+    .transition-text { text-align: center !important; }
+
+    /* Incolonna i progetti: foto sopra, testo sotto */
+    .content-block {
+        width: 86vw !important;
+        margin-left: -43vw !important;
+        flex-direction: column !important;
+        gap: 20px !important;
+    }
+    .content-block.reverse { flex-direction: column !important; }
+    
     .photo-box {
         width: 100% !important;
-        height: auto !important;
-        aspect-ratio: 16 / 9;
-        order: 1 !important; /* Forza la foto in cima */
+        height: 250px !important;
+        order: 1 !important; /* Forza la foto in alto */
     }
-    
-    /* Il testo si centra e va SOTTO */
     .text-box {
         width: 100% !important;
         margin: 0 !important;
         text-align: center !important;
         order: 2 !important; /* Forza il testo in basso */
     }
-    
-    /* Regolazioni Testi per evitare che escano dallo schermo */
     .text-align-right { text-align: center !important; }
-    .hero-title { width: 90vw; margin-left: -45vw !important; transform: none !important; }
-    .hero-title h1 { font-size: 80px !important; }
-    .hero-title h2 { font-size: 24px !important; }
-    .project-title { font-size: 42px !important; margin-bottom: 10px !important; }
-    .transition-text { width: 90vw !important; margin-left: -45vw !important; text-align: center !important; font-size: 18px !important; }
-    .intro-text { width: 90vw !important; }
+    .project-title { font-size: 42px !important; }
 
-    /* UI Tasti e Menù */
-    .home-btn { top: 20px !important; left: 20px !important; }
-    .social-sidebar { width: 90vw !important; bottom: 20px !important; gap: 12px !important; }
+    /* Scritta finale e UI */
+    .monumental-text { font-size: 13vw !important; letter-spacing: -1px !important; }
+    .social-sidebar { width: 90vw !important; gap: 10px !important; }
     .icon-content a { width: 45px !important; height: 45px !important; }
-
-    /* Modal per Telefono */
-    .modal-card { width: 90vw !important; height: 85vh !important; flex-direction: column !important; overflow-y: auto !important; }
-    .modal-image-col { flex: none !important; height: 40% !important; }
-    .modal-text-col { flex: none !important; padding: 20px !important; }
-    .modal-text-col h3 { font-size: 28px !important; }
-    .modal-nav { font-size: 30px !important; }
-    .prev-btn { left: 10px !important; }
-    .next-btn { right: 10px !important; }
-    .modal-close { top: 10px !important; right: 15px !important; font-size: 30px !important; }
-
-    /* Scritta Finale */
-    .monumental-text { font-size: 38px !important; }
-    .final-title-container { width: 90vw !important; top: 5930px !important; }
+    
+    /* Modal per mobile */
+    .modal-card { width: 90vw !important; height: 80vh !important; flex-direction: column !important; }
+    .modal-image-col { height: 40% !important; }
+    .modal-text-col { height: 60% !important; padding: 20px !important; }
+    .modal-text-col h3 { font-size: 26px !important; }
+    .modal-nav { font-size: 28px !important; }
 }
+    
 </style>
 </head>
 <body>
@@ -265,142 +285,152 @@ path {
 <div class="home-btn">HOME</div>
 
 <div class="social-sidebar">
-    <div class="icon-content">
-        <span class="tooltip">Instagram</span>
-        <a href="https://instagram.com/bertone_des/" target="_blank" data-social="instagram">
-            <div class="filled"></div><i class="fa-brands fa-instagram"></i>
-        </a>
-    </div>
-    <div class="icon-content">
-        <span class="tooltip">LinkedIn</span>
-        <a href="https://linkedin.com/in/tommasobertone" target="_blank" data-social="linkedin">
-            <div class="filled"></div><i class="fa-brands fa-linkedin-in"></i>
-        </a>
-    </div>
-    <div class="icon-content">
-        <span class="tooltip">Behance</span>
-        <a href="https://www.behance.net/tommasobertone" target="_blank" data-social="behance">
-            <div class="filled"></div><i class="fa-brands fa-behance"></i>
-        </a>
-    </div>
-    <div class="icon-content">
-        <span class="tooltip" id="mailTooltip">Email</span>
-        <a href="#" id="copyMail" data-social="mail">
-            <div class="filled"></div><i class="fa-regular fa-envelope"></i>
-        </a>
-    </div>
+<div class="icon-content">
+<span class="tooltip">Instagram</span>
+<a href="https://instagram.com/bertone_des/" target="_blank" data-social="instagram">
+<div class="filled"></div><i class="fa-brands fa-instagram"></i>
+</a>
 </div>
-  
+<div class="icon-content">
+<span class="tooltip">LinkedIn</span>
+<a href="https://linkedin.com/in/tommasobertone" target="_blank" data-social="linkedin">
+<div class="filled"></div><i class="fa-brands fa-linkedin-in"></i>
+</a>
+</div>
+<div class="icon-content">
+<span class="tooltip">Behance</span>
+<a href="https://www.behance.net/tommasobertone" target="_blank" data-social="behance">
+<div class="filled"></div><i class="fa-brands fa-behance"></i>
+</a>
+</div>
+<div class="icon-content">
+<span class="tooltip" id="mailTooltip">Email</span>
+<a href="#" id="copyMail" data-social="mail">
+<div class="filled"></div><i class="fa-regular fa-envelope"></i>
+</a>
+</div>
+</div>
+
 <svg class="hidden-filter">
-    <defs>
-        <filter id="goo">
-            <feGaussianBlur in="SourceGraphic" stdDeviation="8" result="blur" />
-            <feColorMatrix in="blur" mode="matrix" values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 18 -7" result="goo" />
-            <feBlend in="SourceGraphic" in2="goo" />
-        </filter>
-    </defs>
+<defs>
+<filter id="goo">
+<feGaussianBlur in="SourceGraphic" stdDeviation="8" result="blur" />
+<feColorMatrix in="blur" mode="matrix" values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 18 -7" result="goo" />
+<feBlend in="SourceGraphic" in2="goo" />
+</filter>
+</defs>
 </svg>
 
-<div class="main-wrapper">
-    <div class="content-container">
+<div class="scroll-area"></div>
 
-        <div class="intro-text">
-            scroll down to<br>get to know me!
-        </div>
+<div class="fixed-viewport">
+<div class="camera">
 
-        <div class="hero-title" style="top: 500px;">
-            <h1>hi!</h1>
-            <h2>I'm Tommaso Bertone</h2>
-        </div>
+<div class="intro-text">
+scroll down to<br>get to know me!
+</div>
 
-        <div class="gooey-group">
+<div class="hero-title" style="top: 500px;">
+<h1>hi!</h1>
+<h2>I'm Tommaso Bertone</h2>
+</div>
 
-            <div class="blob"></div>
-            
-            <svg class="line-svg" viewBox="0 0 2000 8000">
-                <path d="M 1000 150 V 180" vector-effect="non-scaling-stroke"/>
-            </svg>
+<div class="gooey-group" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;">
 
-            <svg class="line-svg animated-line-container" viewBox="0 0 2000 8000">
-                <path id="animatedLine" vector-effect="non-scaling-stroke" d="
-                      M1000,150v731.09c0,11.05-8.95,20-20,20H225.09c-11.05,0-20,8.95-20,20v373.62c0,11.05,8.95,20,20,20h1555.23c11.05,0,20,8.95,20,20v373.62c0,11.05-8.95,20-20,20H637.32c-11.05,0-20,8.95-20,20v373.62c0,11.05,8.95,20,20,20h754.91c11.05,0,20,8.95,20,20v373.62c0,11.05-8.95,20-20,20H225.09c-11.05,0-20,8.95-20,20v373.62c0,11.05,8.95,20,20,20h1555.23c11.05,0,20,8.95,20,20v787.23c0,11.05-8.95,20-20,20h-348.09c-11.05,0-20,8.95-20,20v373.62c0,11.05-8.95,20-20,20H225.09c-11.05,0-20,8.95-20,20v373.62c0,11.05,8.95,20,20,20h1555.23c11.05,0,20,8.95,20,20v373.62c0,11.05-8.95,20-20,20h-348.09c-11.05,0-20,8.95-20,20v373.62c0,11.05,8.95,20,20,20h348.09c11.05,0,20,8.95,20,20v373.62c0,11.05-8.95,20-20,20H225.09c-11.05,0-20,8.95-20,20v373.62c0,11.05,8.95,20,20,20h769.69c11.05,0,20,8.95,20,20v373.62c0,11.05-8.95,20-20,20h-357.46c-11.05,0-20,8.95-20,20v373.62c0,11.05,8.95,20,20,20h1143c11.05,0,20,8.95,20,20v373.62c0,11.05-8.95,20-20,20H205.09
-                  "/>
-            </svg>
+<div class="blob"></div>
+<svg class="line-svg" viewBox="0 0 2000 8000" preserveAspectRatio="none">
+    <path d="M 1000 150 V 180" />
+</svg>
 
-            <div class="content-block" style="top: 800px;"> 
-                <div class="photo-box" style="cursor: default;">
-                    <img src="foto-profilo.jpeg.jpg" alt="Tommaso Bertone" style="object-fit: contain;">
-                </div>
-                <div class="text-box" style="width: 780px; flex-shrink: 0; margin-left: -70px; margin-top: -35px;">
-                    <p>22 year, studying Product Design at Politecnico di Torino.<br>
-                    Keen to upgrade my software and practical skills, I've always been open to innovations and challenges to better myself.<br>
-                    Through my projects I aim to convey functionality and a balanced aesthetics.</p>
-                </div>
-            </div>
-            
-            <div class="transition-text" style="top: 1350px;">enjoy these projects of mine!</div>
+<svg class="line-svg animated-line-container" viewBox="0 0 2000 8000" preserveAspectRatio="none">
+<path id="animatedLine" d="
+                     M1000,150v731.09c0,11.05-8.95,20-20,20H225.09c-11.05,0-20,8.95-20,20v373.62c0,11.05,8.95,20,20,20h1555.23c11.05,0,20,8.95,20,20v373.62c0,11.05-8.95,20-20,20H637.32c-11.05,0-20,8.95-20,20v373.62c0,11.05,8.95,20,20,20h754.91c11.05,0,20,8.95,20,20v373.62c0,11.05-8.95,20-20,20H225.09c-11.05,0-20,8.95-20,20v373.62c0,11.05,8.95,20,20,20h1555.23c11.05,0,20,8.95,20,20v787.23c0,11.05-8.95,20-20,20h-348.09c-11.05,0-20,8.95-20,20v373.62c0,11.05-8.95,20-20,20H225.09c-11.05,0-20,8.95-20,20v373.62c0,11.05,8.95,20,20,20h1555.23c11.05,0,20,8.95,20,20v373.62c0,11.05-8.95,20-20,20h-348.09c-11.05,0-20,8.95-20,20v373.62c0,11.05,8.95,20,20,20h348.09c11.05,0,20,8.95,20,20v373.62c0,11.05-8.95,20-20,20H225.09c-11.05,0-20,8.95-20,20v373.62c0,11.05,8.95,20,20,20h769.69c11.05,0,20,8.95,20,20v373.62c0,11.05-8.95,20-20,20h-357.46c-11.05,0-20,8.95-20,20v373.62c0,11.05,8.95,20,20,20h1143c11.05,0,20,8.95,20,20v373.62c0,11.05-8.95,20-20,20H205.09
+                 "/>
+</svg>
 
-            <div class="content-block reverse" style="top: 1700px;"> 
-                <div class="text-box"><p class="project-title">Viote</p></div>
-                <div class="photo-box" data-project="viote">
-                    <img src="viote.jpeg" alt="Viote">
-                </div>
-            </div>
+<div class="content-block" style="top: 800px;"> 
 
-            <div class="content-block" style="top: 2600px;"> 
-                <div class="text-box"><p class="project-title">Clivio</p></div>
-                <div class="photo-box" data-project="clivio">
-                    <img src="clivio.jpeg" alt="Clivio">
-                </div>
-            </div>
+<div class="photo-box" style="cursor: default;">
+<img src="foto-profilo.jpeg.jpg" alt="Tommaso Bertone" style="object-fit: contain;">
+</div>
 
-            <div class="content-block" style="top: 3400px;"> 
-                <div class="photo-box" data-project="toori">
-                    <img src="toori.jpeg" alt="Toori">
-                </div>
-                <div class="text-box text-align-right"><p class="project-title">Toori</p></div>
-            </div> 
-            
-            <div class="content-block" style="top: 4070px;"> 
-                <div class="text-box"><p class="project-title">Cavea</p></div>
-                <div class="photo-box" data-project="cavea">
-                    <img src="cavea.jpg" alt="Cavea">
-                </div>
-            </div>
-            
-            <div class="content-block" style="top: 4730px;"> 
-                <div class="photo-box" data-project="nook">
-                    <img src="prova.jpeg" alt="Nook">
-                </div>
-                <div class="text-box text-align-right"><p class="project-title">Nook</p></div>
-            </div> 
-            
-            <div class="content-block" style="top: 5130px;"> 
-                <div class="photo-box" data-project="varkumla">
-                    <img src="varkumla.jpeg" alt="Varkumla">
-                </div>
-                <div class="text-box text-align-right">
-                    <p class="project-title"><em>building</em> Vårkumla</p>
-                </div>
-            </div>
+<div class="text-box" style="width: 780px; flex-shrink: 0; margin-left: -70px; margin-top: -35px;">
+<p>22 year, studying Product Design at Politecnico di Torino.<br>
+Keen to upgrade my software and practical skills, I've always been open to innovations and challenges to better myself.<br>
+Through my projects I aim to convey functionality and a balanced aesthetics.</p>
+</div>
 
-        </div> <div class="final-title-container" style="top: 5890px;">
-            <h1 class="monumental-text" id="final-text">LET'S KEEP IN TOUCH!</h1>
-        </div>
+</div>
+<div class="transition-text" style="top: 1350px;">enjoy these projects of mine!</div>
 
-    </div> </div> <div class="modal-overlay" id="projectModal">
-    <div class="modal-nav prev-btn" id="modalPrev"><i class="fa-solid fa-chevron-left"></i></div>
-    <div class="modal-nav next-btn" id="modalNext"><i class="fa-solid fa-chevron-right"></i></div>
-    <div class="modal-close" id="modalClose"><i class="fa-solid fa-xmark"></i></div>
-    <div class="modal-card">
-        <div class="modal-image-col">
-            <img src="" id="modalImg" alt="Slide">
-        </div>
-        <div class="modal-text-col">
-            <h3 id="modalTitle">Titolo</h3>
-            <p id="modalText">Descrizione...</p>
-        </div>
-    </div>
+<div class="content-block reverse" style="top: 1700px;"> 
+<div class="text-box"><p class="project-title">Viote</p></div>
+<div class="photo-box" data-project="viote">
+<img src="viote.jpeg" alt="Viote">
+</div>
+</div>
+
+<div class="content-block" style="top: 2600px;"> 
+<div class="text-box"><p class="project-title">Clivio</p></div>
+<div class="photo-box" data-project="clivio">
+<img src="clivio.jpeg" alt="Clivio">
+</div>
+</div>
+
+<div class="content-block" style="top: 3400px;"> 
+<div class="photo-box" data-project="toori">
+<img src="toori.jpeg" alt="Toori">
+</div>
+<div class="text-box text-align-right"><p class="project-title">Toori</p></div>
+</div> 
+
+<div class="content-block" style="top: 4070px;"> 
+<div class="text-box"><p class="project-title">Cavea</p></div>
+<div class="photo-box" data-project="cavea">
+<img src="cavea.jpg" alt="Cavea">
+</div>
+</div>
+
+<div class="content-block" style="top: 4730px;"> 
+<div class="photo-box" data-project="nook">
+<img src="prova.jpeg" alt="Nook">
+</div>
+<div class="text-box text-align-right"><p class="project-title">Nook</p></div>
+</div> 
+
+<!-- ULTIMO PROGETTO (VARKUMLA) -->
+<div class="content-block" style="top: 5130px;"> 
+<div class="photo-box" data-project="varkumla">
+<img src="varkumla.jpeg" alt="Varkumla">
+</div>
+<div class="text-box text-align-right">
+<p class="project-title"><em>building</em> Vårkumla</p>
+</div>
+</div>
+
+</div> <!-- ⚠️ ATTENZIONE: QUESTA È LA CHIUSURA DEL GOOEY-GROUP -->
+
+<!-- SCRITTA FINALE (Ora è fuori dal filtro liquido e sarà nitidissima!) -->
+<div class="final-title-container" style="top: 5890px;">
+<h1 class="monumental-text" id="final-text">LET'S KEEP IN TOUCH!</h1>
+</div>
+
+</div> <!-- Chiude la .camera -->
+</div> <!-- Chiude il .fixed-viewport --> 
+
+<div class="modal-overlay" id="projectModal">
+<div class="modal-nav prev-btn" id="modalPrev"><i class="fa-solid fa-chevron-left"></i></div>
+<div class="modal-nav next-btn" id="modalNext"><i class="fa-solid fa-chevron-right"></i></div>
+<div class="modal-close" id="modalClose"><i class="fa-solid fa-xmark"></i></div>
+<div class="modal-card">
+<div class="modal-image-col">
+<img src="" id="modalImg" alt="Slide">
+</div>
+<div class="modal-text-col">
+<h3 id="modalTitle">Titolo</h3>
+<p id="modalText">Descrizione...</p>
+</div>
+</div>
 </div>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
@@ -408,39 +438,55 @@ path {
 <script src="https://unpkg.com/@studio-freight/lenis@1.0.34/dist/lenis.min.js"></script>
 
 <script>
-// 1. INIZIALIZZAZIONE LENIS (SCROLL FLUIDO DI DEFAULT)
+// 1. INIZIALIZZAZIONE LENIS E SCROLL
 const lenis = new Lenis({
-    duration: 1.5, 
-    easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)), 
-    direction: 'vertical',
-    smooth: true
+duration: 1.5, 
+easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)), 
+direction: 'vertical',
+smooth: true
 });
 
 function raf(time) {
-    lenis.raf(time);
-    requestAnimationFrame(raf);
+lenis.raf(time);
+requestAnimationFrame(raf);
 }
 requestAnimationFrame(raf);
 
 gsap.registerPlugin(ScrollTrigger);
 
-// 2. MOTORE DISEGNO LINEA (ORA SVINCOLATO DALLA TELECAMERA)
 const path = document.querySelector("#animatedLine");
+const camera = document.querySelector(".camera");
 const pathLength = path.getTotalLength();
+
 gsap.set(path, { strokeDasharray: pathLength, strokeDashoffset: pathLength });
 
-gsap.to(path, {
-    strokeDashoffset: 0,
-    ease: "none",
-    scrollTrigger: {
-        trigger: ".main-wrapper",
-        start: "top top",
-        end: "bottom bottom",
-        scrub: 1
-    }
+function updateCamera(progress) {
+const svgElement = document.querySelector('.animated-line-container');
+const svgHeight = svgElement.getBoundingClientRect().height || 6400; 
+const scaleRatio = svgHeight / 8000; 
+const drawLength = progress * pathLength;
+
+gsap.to(path, { strokeDashoffset: pathLength - drawLength, ease: "power2.out", duration: 0.1 });
+const point = path.getPointAtLength(drawLength);
+const visualPointY = point.y * scaleRatio;
+const targetRatioY = progress < 0.05 ? 0.5 + (progress / 0.05) * 0.30 : 0.80;
+const cameraY = (window.innerHeight * targetRatioY) - visualPointY;
+
+gsap.to(camera, { x: 0, y: cameraY, ease: "power2.out", duration: 0.5 });
+}
+updateCamera(0);
+
+ScrollTrigger.create({
+trigger: ".scroll-area", start: "top top", end: "bottom bottom", scrub: 1, 
+onUpdate: (self) => { updateCamera(self.progress); }
 });
 
-// 3. TASTO HOME CON CURVA BEZIER
+window.addEventListener("resize", () => {
+const st = ScrollTrigger.getAll()[0];
+if(st) updateCamera(st.progress);
+});
+
+// 2. SOCIAL BUTTONS & HOME (Ritorno fluido ad "S")
 document.querySelector('.home-btn').addEventListener('click', () => {
     lenis.scrollTo(0, { 
         duration: 3.0, 
@@ -453,61 +499,61 @@ const tooltip = document.getElementById("mailTooltip");
 const email = "bertonetommaso2@gmail.com"; 
 
 mailButton.addEventListener("click", async (e)=>{
-    e.preventDefault();
-    try{
-        await navigator.clipboard.writeText(email);
-        tooltip.textContent = "Copied!";
-        setTimeout(()=>{ tooltip.textContent="Email"; },1800);
-    }catch(err){ tooltip.textContent="Error"; }
+e.preventDefault();
+try{
+await navigator.clipboard.writeText(email);
+tooltip.textContent = "Copied!";
+setTimeout(()=>{ tooltip.textContent="Email"; },1800);
+}catch(err){ tooltip.textContent="Error"; }
 });
 
-// 4. DATABASE DEL CAROSELLO
+// 3. DATABASE DEL CAROSELLO
 const portfolioDatabase = {
-    "viote": [
-        { img: "viote.jpeg", title: "Viote", text: "La foto preview. Breve introduzione al progetto Viote." },
-        { img: "foto2.jpg", title: "Viote - 2", text: "Analisi dei materiali." },
-        { img: "foto3.jpg", title: "Viote - 3", text: "Modellazione 3D e prototipazione." },
-        { img: "foto4.jpg", title: "Viote - 4", text: "Dettagli tecnici." },
-        { img: "foto5.jpg", title: "Viote - 5", text: "Scatti finali del prodotto." }
-    ],
-    "clivio": [
-        { img: "clivio.jpeg", title: "Clivio", text: "Preview di Clivio. Progetto sull'ergonomia." },
-        { img: "foto2.jpg", title: "Clivio - 2", text: "Slide 2..." },
-        { img: "foto3.jpg", title: "Clivio - 3", text: "Slide 3..." },
-        { img: "foto4.jpg", title: "Clivio - 4", text: "Slide 4..." },
-        { img: "foto5.jpg", title: "Clivio - 5", text: "Slide 5..." }
-    ],
-    "toori": [
-        { img: "toori.jpeg", title: "Toori", text: "Preview di Toori." },
-        { img: "foto2.jpg", title: "Toori - 2", text: "Slide 2..." },
-        { img: "foto3.jpg", title: "Toori - 3", text: "Slide 3..." },
-        { img: "foto4.jpg", title: "Toori - 4", text: "Slide 4..." },
-        { img: "foto5.jpg", title: "Toori - 5", text: "Slide 5..." }
-    ],
-    "cavea": [
-        { img: "cavea.jpg", title: "Cavea", text: "Preview di Cavea." },
-        { img: "foto2.jpg", title: "Cavea - 2", text: "Slide 2..." },
-        { img: "foto3.jpg", title: "Cavea - 3", text: "Slide 3..." },
-        { img: "foto4.jpg", title: "Cavea - 4", text: "Slide 4..." },
-        { img: "foto5.jpg", title: "Cavea - 5", text: "Slide 5..." }
-    ],
-    "nook": [
-        { img: "prova.jpeg", title: "Nook", text: "Preview di Nook." },
-        { img: "foto2.jpg", title: "Nook - 2", text: "Slide 2..." },
-        { img: "foto3.jpg", title: "Nook - 3", text: "Slide 3..." },
-        { img: "foto4.jpg", title: "Nook - 4", text: "Slide 4..." },
-        { img: "foto5.jpg", title: "Nook - 5", text: "Slide 5..." }
-    ],
-    "varkumla": [
-        { img: "varkumla.jpeg", title: "Vårkumla", text: "Preview di Varkumla." },
-        { img: "foto2.jpg", title: "Vårkumla - 2", text: "Slide 2..." },
-        { img: "foto3.jpg", title: "Vårkumla - 3", text: "Slide 3..." },
-        { img: "foto4.jpg", title: "Vårkumla - 4", text: "Slide 4..." },
-        { img: "foto5.jpg", title: "Vårkumla - 5", text: "Slide 5..." }
-    ]
+"viote": [
+{ img: "viote.jpeg", title: "Viote", text: "La foto preview. Breve introduzione al progetto Viote." },
+{ img: "foto2.jpg", title: "Viote - 2", text: "Analisi dei materiali." },
+{ img: "foto3.jpg", title: "Viote - 3", text: "Modellazione 3D e prototipazione." },
+{ img: "foto4.jpg", title: "Viote - 4", text: "Dettagli tecnici." },
+{ img: "foto5.jpg", title: "Viote - 5", text: "Scatti finali del prodotto." }
+],
+"clivio": [
+{ img: "clivio.jpeg", title: "Clivio", text: "Preview di Clivio. Progetto sull'ergonomia." },
+{ img: "foto2.jpg", title: "Clivio - 2", text: "Slide 2..." },
+{ img: "foto3.jpg", title: "Clivio - 3", text: "Slide 3..." },
+{ img: "foto4.jpg", title: "Clivio - 4", text: "Slide 4..." },
+{ img: "foto5.jpg", title: "Clivio - 5", text: "Slide 5..." }
+],
+"toori": [
+{ img: "toori.jpeg", title: "Toori", text: "Preview di Toori." },
+{ img: "foto2.jpg", title: "Toori - 2", text: "Slide 2..." },
+{ img: "foto3.jpg", title: "Toori - 3", text: "Slide 3..." },
+{ img: "foto4.jpg", title: "Toori - 4", text: "Slide 4..." },
+{ img: "foto5.jpg", title: "Toori - 5", text: "Slide 5..." }
+],
+"cavea": [
+{ img: "cavea.jpg", title: "Cavea", text: "Preview di Cavea." },
+{ img: "foto2.jpg", title: "Cavea - 2", text: "Slide 2..." },
+{ img: "foto3.jpg", title: "Cavea - 3", text: "Slide 3..." },
+{ img: "foto4.jpg", title: "Cavea - 4", text: "Slide 4..." },
+{ img: "foto5.jpg", title: "Cavea - 5", text: "Slide 5..." }
+],
+"nook": [
+{ img: "prova.jpeg", title: "Nook", text: "Preview di Nook." },
+{ img: "foto2.jpg", title: "Nook - 2", text: "Slide 2..." },
+{ img: "foto3.jpg", title: "Nook - 3", text: "Slide 3..." },
+{ img: "foto4.jpg", title: "Nook - 4", text: "Slide 4..." },
+{ img: "foto5.jpg", title: "Nook - 5", text: "Slide 5..." }
+],
+"varkumla": [
+{ img: "varkumla.jpeg", title: "Vårkumla", text: "Preview di Varkumla." },
+{ img: "foto2.jpg", title: "Vårkumla - 2", text: "Slide 2..." },
+{ img: "foto3.jpg", title: "Vårkumla - 3", text: "Slide 3..." },
+{ img: "foto4.jpg", title: "Vårkumla - 4", text: "Slide 4..." },
+{ img: "foto5.jpg", title: "Vårkumla - 5", text: "Slide 5..." }
+]
 };
 
-// 5. LOGICA DEL MODAL E CAROSELLO
+// 4. LOGICA DEL MODAL E CAROSELLO
 const modal = document.getElementById('projectModal');
 const modalImg = document.getElementById('modalImg');
 const modalTitle = document.getElementById('modalTitle');
@@ -520,51 +566,51 @@ let currentProject = "";
 let currentSlideIndex = 0;
 
 document.querySelectorAll('.photo-box').forEach(box => {
-    box.addEventListener('click', () => {
-        const projectId = box.getAttribute('data-project');
-        if(projectId && portfolioDatabase[projectId]) {
-            currentProject = projectId;
-            currentSlideIndex = 0; 
-            updateModalContent();
-            modal.classList.add('active');
-            lenis.stop(); 
-        }
-    });
+box.addEventListener('click', () => {
+const projectId = box.getAttribute('data-project');
+if(projectId && portfolioDatabase[projectId]) {
+currentProject = projectId;
+currentSlideIndex = 0; 
+updateModalContent();
+modal.classList.add('active');
+lenis.stop(); 
+}
+});
 });
 
 btnClose.addEventListener('click', () => { modal.classList.remove('active'); lenis.start(); });
 modal.addEventListener('click', (e) => { if(e.target === modal) { modal.classList.remove('active'); lenis.start(); } });
 
 function updateModalContent() {
-    const slideData = portfolioDatabase[currentProject][currentSlideIndex];
-    modalImg.src = slideData.img;
-    modalTitle.textContent = slideData.title;
-    modalText.innerHTML = slideData.text; 
+const slideData = portfolioDatabase[currentProject][currentSlideIndex];
+modalImg.src = slideData.img;
+modalTitle.textContent = slideData.title;
+modalText.innerHTML = slideData.text; 
 }
 
 btnNext.addEventListener('click', () => {
-    const maxSlides = portfolioDatabase[currentProject].length - 1;
-    if(currentSlideIndex < maxSlides) { currentSlideIndex++; } else { currentSlideIndex = 0; }
-    updateModalContent();
+const maxSlides = portfolioDatabase[currentProject].length - 1;
+if(currentSlideIndex < maxSlides) { currentSlideIndex++; } else { currentSlideIndex = 0; }
+updateModalContent();
 });
 
 btnPrev.addEventListener('click', () => {
-    const maxSlides = portfolioDatabase[currentProject].length - 1;
-    if(currentSlideIndex > 0) { currentSlideIndex--; } else { currentSlideIndex = maxSlides; }
-    updateModalContent();
+const maxSlides = portfolioDatabase[currentProject].length - 1;
+if(currentSlideIndex > 0) { currentSlideIndex--; } else { currentSlideIndex = maxSlides; }
+updateModalContent();
 });
 
-// 6. ANIMAZIONE TESTO FINALE ("LET'S KEEP IN TOUCH!")
+// 5. ANIMAZIONE TESTO FINALE ("LET'S KEEP IN TOUCH!")
 const finalText = document.getElementById('final-text');
 if(finalText) {
-    const text = finalText.innerText;
-    finalText.innerHTML = '';
-    text.split('').forEach(c => {
-        const s = document.createElement('span');
-        s.className = 'char';
-        s.innerHTML = c === ' ' ? '&nbsp;' : c;
-        finalText.appendChild(s);
-    });
+const text = finalText.innerText;
+finalText.innerHTML = '';
+text.split('').forEach(c => {
+const s = document.createElement('span');
+s.className = 'char';
+s.innerHTML = c === ' ' ? '&nbsp;' : c;
+finalText.appendChild(s);
+});
 }
 </script>
 </body>
