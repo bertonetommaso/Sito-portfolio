@@ -7,12 +7,13 @@
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
 <style>
-/* RESET BASE */
+/* ========================================= */
+/* RESET BASE & UI FISSA                     */
+/* ========================================= */
 body, html {
     margin: 0; padding: 0; background-color: #fcfcfc; overflow-x: hidden;
 }
 
-/* TASTO HOME FISSO */
 .home-btn {
     position: fixed; top: 40px; left: 40px; font-family: 'DM Sans', sans-serif;
     font-weight: 300; font-size: 16px; letter-spacing: 1px; color: #333;
@@ -20,10 +21,8 @@ body, html {
 }
 .home-btn:hover { color: #f05a28; }
 
-/* AREA DI SCROLL */
 .scroll-area { height: 10000px; }
 
-/* VIEWPORT FISSO E TELECAMERA */
 .fixed-viewport {
     position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
     pointer-events: none; overflow: hidden;
@@ -32,32 +31,45 @@ body, html {
     position: absolute; top: 0; left: 0; width: 100%; height: 100%; will-change: transform;
 }
 
-/* GRUPPO EFFETTO GOOEY E BLOB */
-.gooey-group { position: relative; filter: url('#goo'); z-index: 2; }
+/* ========================================= */
+/* BACKGROUND & GOOEY EFFECT                 */
+/* ========================================= */
+.gooey-background { 
+    position: absolute; top: 0; left: 0; width: 100%; height: 100%; 
+    filter: url('#goo'); z-index: 2; pointer-events: none;
+}
 .blob {
     position: absolute; width: 120px; height: 120px; background: #f05a28;
     top: 120px; left: 50%; margin-top: -60px; margin-left: -60px; 
     animation: morph 8s ease-in-out infinite, spin 20s linear infinite;
 }
-
-/* TELA SVG E TRACCIA ANIMATA */
 .line-svg {
     position: absolute; top: 0; left: 50%; margin-left: -800px; width: 1600px; height: 6400px;
 }
 .animated-line-container { z-index: 1; }
 path {
-    stroke: #f05a28; stroke-width: 30; fill: none; stroke-linecap: round; stroke-linejoin: round; 
+    stroke: #f05a28; 
+    stroke-width: 30; 
+    fill: none; 
+    stroke-linecap: round; 
+    stroke-linejoin: round; 
+    vector-effect: non-scaling-stroke; 
 }
+.mobile-line { display: none; } /* Nascosta di default */
 
-/* CONTENUTI DEI PROGETTI */
+/* ========================================= */
+/* CONTENT LAYER (Desktop Defaults)          */
+/* ========================================= */
+.content-layer {
+    position: absolute; top: 0; left: 0; width: 100%; height: 6400px; z-index: 5;
+}
 .content-block {
     position: absolute; left: 50%; margin-left: -660px; width: 1320px; 
     display: flex; align-items: center; justify-content: space-between;
-    gap: 80px; z-index: 5; font-family: 'DM Sans', sans-serif; pointer-events: auto;
+    gap: 80px; font-family: 'DM Sans', sans-serif; pointer-events: auto;
 }
 .content-block.reverse { flex-direction: row-reverse; }
 
-/* STILE DELLA FOTO (Hover e Cursore) */
 .photo-box {
     flex: 1; background: #222; height: 360px; border-radius: 8px; overflow: hidden;
     box-shadow: 0 10px 30px rgba(0,0,0,0.05); 
@@ -69,8 +81,7 @@ path {
 }
 .photo-box img { width: 100%; height: 100%; object-fit: cover; }
 
-/* TESTI PROGETTI */
-.text-box { flex: 1; font-weight: 400; font-size: 18px; line-height: 1.8; color: #111; }
+.text-box { flex: 1; font-weight: 400; font-size: 18px; line-height: 1.8; color: #111; pointer-events: auto;}
 .text-align-right { text-align: right; }
 .project-title {
     font-weight: 300; font-size: 64px; line-height: 1.1; margin: 0 0 15px 0; 
@@ -81,20 +92,39 @@ path {
 .intro-text {
     position: absolute; top: -15px; left: 50%; transform: translateX(-50%); 
     text-align: center; font-family: 'DM Sans', sans-serif; font-weight: 300; 
-    font-size: 20px; color: #000000; z-index: 10;
+    font-size: 20px; color: #000000;
 }
 .transition-text {
     position: absolute; left: 50%; margin-left: -650px; font-family: 'DM Sans', sans-serif;
-    font-weight: 400; font-size: 22px; color: #000000; z-index: 5;
+    font-weight: 400; font-size: 22px; color: #000000;
 }
 .hero-title {
     position: absolute; left: 50%; margin-left: -50px; transform: translateX(-100%); 
-    text-align: center; font-family: 'DM Sans', sans-serif; color: #000000; z-index: 5;
+    text-align: center; font-family: 'DM Sans', sans-serif; color: #000000;
 }
 .hero-title h1 { font-weight: 300; font-size: 180px; margin: 0; line-height: 0.75; letter-spacing: -4px; }
 .hero-title h2 { font-weight: 300; font-size: 42px; margin: 15px 0 0 0; letter-spacing: -1px; }
 
-/* SIDEBAR SOCIAL */
+/* ========================================= */
+/* SCRITTA FINALE (MONUMENTAL)               */
+/* ========================================= */
+.final-title-container {
+    position: absolute; left: 50%; transform: translateX(-50%);
+    width: 100%; text-align: center; pointer-events: auto;
+}
+.monumental-text {
+    font-family: 'DM Sans', sans-serif; font-weight: 700; font-size: 100px; 
+    line-height: 1; letter-spacing: -3px; color: #000000; margin: 0;
+    white-space: nowrap; cursor: default;
+}
+.char {
+    display: inline-block; transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+.char:hover { transform: translateY(-8px) rotate(3deg); color: #111; }
+
+/* ========================================= */
+/* SIDEBAR SOCIAL                            */
+/* ========================================= */
 .social-sidebar{
     position:fixed; left:50%; bottom:40px; transform:translateX(-50%);
     display:flex; flex-direction:row; gap:22px; z-index:9999; pointer-events: auto;
@@ -113,15 +143,13 @@ path {
 }
 .icon-content a:hover{ color:#fff; transform:translateY(-3px); box-shadow:0 12px 30px rgba(0,0,0,.12); }
 .icon-content i{ position:relative; z-index:2; font-size:24px; }
-.filled{
-    position:absolute; left:0; bottom:0; width:100%; height:0; transition:.3s;
-}
+.filled{ position:absolute; left:0; bottom:0; width:100%; height:0; transition:.3s; }
 .icon-content:hover .filled{ height:100%; }
 [data-social="instagram"] .filled, [data-social="linkedin"] .filled, 
 [data-social="mail"] .filled, [data-social="behance"] .filled { background:#f05a28; }
 
 /* ========================================= */
-/* MODAL / CAROSELLO A SCHERMO INTERO        */
+/* MODAL / CAROSELLO                         */
 /* ========================================= */
 .modal-overlay {
     position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
@@ -157,7 +185,7 @@ path {
 }
 .modal-close:hover { color: #f05a28; }
 
-/* ANIMAZIONI BLOB E FILTRO */
+/* ANIMAZIONI BLOB */
 @keyframes morph {
     0%   { border-radius: 40% 60% 70% 30% / 40% 50% 60% 50%; }
     20%  { border-radius: 60% 40% 30% 70% / 60% 30% 70% 40%; }
@@ -174,47 +202,80 @@ path {
 .hidden-filter { position: absolute; width: 0; height: 0; }
 
 /* ========================================= */
-/* SCRITTA FINALE (MONUMENTAL)               */
+/* RESPONSIVE & MOBILE FLEXBOX LAYOUT        */
 /* ========================================= */
-.final-title-container {
-    position: absolute;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 100%;
-    text-align: center;
-    z-index: 5;
-    pointer-events: auto;
-}
-
-.monumental-text {
-    font-family: 'DM Sans', sans-serif;
-    font-weight: 700;
-    font-size: 100px; /* Misura gigante */
-    line-height: 1;
-    letter-spacing: -3px;
-    color: #000000;
-    margin: 0;
-    white-space: nowrap;
-    cursor: default;
-}
-
-/* Effetto di hover sulla singola lettera */
-.char {
-    display: inline-block;
-    transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-}
-
-.char:hover {
-    transform: translateY(-8px) rotate(3deg);
-    color: #111;
-}
-
-/* Adattamento testo per schermi piccoli */
 @media (max-width: 1200px) {
     .monumental-text { font-size: 80px; }
 }
+
 @media (max-width: 768px) {
-    .monumental-text { font-size: 40px; }
+    /* Scambio Linee SVG per evitare sbavature */
+    .desktop-line { display: none !important; }
+    .mobile-line { display: block !important; }
+    
+    .line-svg {
+        width: 100vw !important;
+        margin-left: -50vw !important;
+    }
+    .blob {
+        width: 80px !important; height: 80px !important;
+        margin-top: -40px !important; margin-left: -40px !important;
+    }
+
+    /* TRASFORMAZIONE IN FLEXBOX */
+    .content-layer {
+        display: flex !important;
+        flex-direction: column !important;
+        justify-content: space-evenly !important; /* Distribuisce il contenuto uniformemente */
+        align-items: center !important;
+        padding: 100px 0 150px 0 !important;
+        box-sizing: border-box;
+    }
+
+    /* Disattiva tutte le posizioni assolute sui figli */
+    .intro-text, .hero-title, .transition-text, .content-block, .final-title-container {
+        position: relative !important;
+        top: auto !important;
+        left: auto !important;
+        margin: 0 !important;
+        transform: none !important;
+        width: 90vw !important;
+        text-align: center !important;
+    }
+
+    .hero-title h1 { font-size: 80px !important; }
+    .hero-title h2 { font-size: 24px !important; }
+
+    /* Incolonna i progetti: foto sopra, testo sotto */
+    .content-block {
+        flex-direction: column !important;
+        gap: 20px !important;
+    }
+    
+    .photo-box {
+        width: 100% !important;
+        height: 250px !important;
+        order: 1 !important; 
+    }
+    .text-box {
+        width: 100% !important;
+        text-align: center !important;
+        order: 2 !important; 
+    }
+    .text-align-right { text-align: center !important; }
+    .project-title { font-size: 42px !important; }
+
+    /* Scritta finale e UI */
+    .monumental-text { font-size: 11vw !important; letter-spacing: -1px !important; }
+    .social-sidebar { width: 90vw !important; gap: 10px !important; }
+    .icon-content a { width: 45px !important; height: 45px !important; }
+    
+    /* Modal per mobile */
+    .modal-card { width: 90vw !important; height: 80vh !important; flex-direction: column !important; }
+    .modal-image-col { height: 40% !important; }
+    .modal-text-col { height: 60% !important; padding: 20px !important; }
+    .modal-text-col h3 { font-size: 26px !important; }
+    .modal-nav { font-size: 28px !important; }
 }
 </style>
 </head>
@@ -248,7 +309,7 @@ path {
         </a>
     </div>
 </div>
-  
+
 <svg class="hidden-filter">
     <defs>
         <filter id="goo">
@@ -263,42 +324,54 @@ path {
 
 <div class="fixed-viewport">
     <div class="camera">
-
-        <div class="intro-text">
-            scroll down to<br>get to know me!
-        </div>
-
-        <div class="hero-title" style="top: 500px;">
-            <h1>hi!</h1>
-            <h2>I'm Tommaso Bertone</h2>
-        </div>
-
-        <div class="gooey-group" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;">
-
+        
+        <!-- LIVELLO SFONDO: EFFETTI GOOEY E LINEE -->
+        <div class="gooey-background">
             <div class="blob"></div>
-            <svg class="line-svg" viewBox="0 0 2000 8000">
-                <path d="M 1000 150 V 180" />
+
+            <!-- SVG Base (Desktop) -->
+            <svg class="line-svg desktop-line" viewBox="0 0 2000 8000" preserveAspectRatio="none">
+                <path d="M 1000 150 V 180" vector-effect="non-scaling-stroke" />
+            </svg>
+            <!-- SVG Animato (Desktop) -->
+            <svg class="line-svg desktop-line animated-line-container" viewBox="0 0 2000 8000" preserveAspectRatio="none">
+                <path id="animatedLineDesktop" vector-effect="non-scaling-stroke" d="
+                    M1000,150v731.09c0,11.05-8.95,20-20,20H225.09c-11.05,0-20,8.95-20,20v373.62c0,11.05,8.95,20,20,20h1555.23c11.05,0,20,8.95,20,20v373.62c0,11.05-8.95,20-20,20H637.32c-11.05,0-20,8.95-20,20v373.62c0,11.05,8.95,20,20,20h754.91c11.05,0,20,8.95,20,20v373.62c0,11.05-8.95,20-20,20H225.09c-11.05,0-20,8.95-20,20v373.62c0,11.05,8.95,20,20,20h1555.23c11.05,0,20,8.95,20,20v787.23c0,11.05-8.95,20-20,20h-348.09c-11.05,0-20,8.95-20,20v373.62c0,11.05-8.95,20-20,20H225.09c-11.05,0-20,8.95-20,20v373.62c0,11.05,8.95,20,20,20h1555.23c11.05,0,20,8.95,20,20v373.62c0,11.05-8.95,20-20,20h-348.09c-11.05,0-20,8.95-20,20v373.62c0,11.05,8.95,20,20,20h348.09c11.05,0,20,8.95,20,20v373.62c0,11.05-8.95,20-20,20H225.09c-11.05,0-20,8.95-20,20v373.62c0,11.05,8.95,20,20,20h769.69c11.05,0,20,8.95,20,20v373.62c0,11.05-8.95,20-20,20h-357.46c-11.05,0-20,8.95-20,20v373.62c0,11.05,8.95,20,20,20h1143c11.05,0,20,8.95,20,20v373.62c0,11.05-8.95,20-20,20H205.09
+                "/>
             </svg>
 
-            <svg class="line-svg animated-line-container" viewBox="0 0 2000 8000">
-                <path id="animatedLine" d="
-                      M1000,150v731.09c0,11.05-8.95,20-20,20H225.09c-11.05,0-20,8.95-20,20v373.62c0,11.05,8.95,20,20,20h1555.23c11.05,0,20,8.95,20,20v373.62c0,11.05-8.95,20-20,20H637.32c-11.05,0-20,8.95-20,20v373.62c0,11.05,8.95,20,20,20h754.91c11.05,0,20,8.95,20,20v373.62c0,11.05-8.95,20-20,20H225.09c-11.05,0-20,8.95-20,20v373.62c0,11.05,8.95,20,20,20h1555.23c11.05,0,20,8.95,20,20v787.23c0,11.05-8.95,20-20,20h-348.09c-11.05,0-20,8.95-20,20v373.62c0,11.05-8.95,20-20,20H225.09c-11.05,0-20,8.95-20,20v373.62c0,11.05,8.95,20,20,20h1555.23c11.05,0,20,8.95,20,20v373.62c0,11.05-8.95,20-20,20h-348.09c-11.05,0-20,8.95-20,20v373.62c0,11.05,8.95,20,20,20h348.09c11.05,0,20,8.95,20,20v373.62c0,11.05-8.95,20-20,20H225.09c-11.05,0-20,8.95-20,20v373.62c0,11.05,8.95,20,20,20h769.69c11.05,0,20,8.95,20,20v373.62c0,11.05-8.95,20-20,20h-357.46c-11.05,0-20,8.95-20,20v373.62c0,11.05,8.95,20,20,20h1143c11.05,0,20,8.95,20,20v373.62c0,11.05-8.95,20-20,20H205.09
-                  "/>
+            <!-- SVG Base (Mobile - Linea dritta) -->
+            <svg class="line-svg mobile-line" viewBox="0 0 2000 6400" preserveAspectRatio="none">
+                <path d="M 1000 0 V 180" vector-effect="non-scaling-stroke" />
             </svg>
+            <!-- SVG Animato (Mobile) -->
+            <svg class="line-svg mobile-line animated-line-container" viewBox="0 0 2000 6400" preserveAspectRatio="none">
+                <path id="animatedLineMobile" vector-effect="non-scaling-stroke" d="M1000,0 V6400"/>
+            </svg>
+        </div>
+
+        <!-- LIVELLO CONTENUTI -->
+        <div class="content-layer">
+            <div class="intro-text">
+                scroll down to<br>get to know me!
+            </div>
+
+            <div class="hero-title" style="top: 500px;">
+                <h1>hi!</h1>
+                <h2>I'm Tommaso Bertone</h2>
+            </div>
 
             <div class="content-block" style="top: 800px;"> 
-                
                 <div class="photo-box" style="cursor: default;">
                     <img src="foto-profilo.jpeg.jpg" alt="Tommaso Bertone" style="object-fit: contain;">
                 </div>
-                
                 <div class="text-box" style="width: 780px; flex-shrink: 0; margin-left: -70px; margin-top: -35px;">
                     <p>22 year, studying Product Design at Politecnico di Torino.<br>
                     Keen to upgrade my software and practical skills, I've always been open to innovations and challenges to better myself.<br>
                     Through my projects I aim to convey functionality and a balanced aesthetics.</p>
                 </div>
-                
             </div>
+
             <div class="transition-text" style="top: 1350px;">enjoy these projects of mine!</div>
 
             <div class="content-block reverse" style="top: 1700px;"> 
@@ -321,22 +394,21 @@ path {
                 </div>
                 <div class="text-box text-align-right"><p class="project-title">Toori</p></div>
             </div> 
-            
+
             <div class="content-block" style="top: 4070px;"> 
                 <div class="text-box"><p class="project-title">Cavea</p></div>
                 <div class="photo-box" data-project="cavea">
                     <img src="cavea.jpg" alt="Cavea">
                 </div>
             </div>
-            
+
             <div class="content-block" style="top: 4730px;"> 
                 <div class="photo-box" data-project="nook">
                     <img src="prova.jpeg" alt="Nook">
                 </div>
                 <div class="text-box text-align-right"><p class="project-title">Nook</p></div>
             </div> 
-            
-            <!-- ULTIMO PROGETTO (VARKUMLA) -->
+
             <div class="content-block" style="top: 5130px;"> 
                 <div class="photo-box" data-project="varkumla">
                     <img src="varkumla.jpeg" alt="Varkumla">
@@ -346,17 +418,16 @@ path {
                 </div>
             </div>
 
-        </div> <!-- ⚠️ ATTENZIONE: QUESTA È LA CHIUSURA DEL GOOEY-GROUP -->
-
-        <!-- SCRITTA FINALE (Ora è fuori dal filtro liquido e sarà nitidissima!) -->
-        <div class="final-title-container" style="top: 5890px;">
-            <h1 class="monumental-text" id="final-text">LET'S KEEP IN TOUCH!</h1>
+            <div class="final-title-container" style="top: 5890px;">
+                <h1 class="monumental-text" id="final-text">LET'S KEEP IN TOUCH!</h1>
+            </div>
         </div>
 
     </div> <!-- Chiude la .camera -->
 </div> <!-- Chiude il .fixed-viewport --> 
-    
-    <div class="modal-overlay" id="projectModal">
+
+<!-- MODAL E CAROSELLO RESTANO INVARIATI HTML -->
+<div class="modal-overlay" id="projectModal">
     <div class="modal-nav prev-btn" id="modalPrev"><i class="fa-solid fa-chevron-left"></i></div>
     <div class="modal-nav next-btn" id="modalNext"><i class="fa-solid fa-chevron-right"></i></div>
     <div class="modal-close" id="modalClose"><i class="fa-solid fa-xmark"></i></div>
@@ -392,43 +463,61 @@ requestAnimationFrame(raf);
 
 gsap.registerPlugin(ScrollTrigger);
 
-const path = document.querySelector("#animatedLine");
+// 2. GESTIONE LINEA RESPONSIVE & TELECAMERA
+let isMobile = window.innerWidth <= 768;
+let activePath = isMobile ? document.querySelector("#animatedLineMobile") : document.querySelector("#animatedLineDesktop");
+let pathLength = activePath.getTotalLength();
 const camera = document.querySelector(".camera");
-const pathLength = path.getTotalLength();
 
-gsap.set(path, { strokeDasharray: pathLength, strokeDashoffset: pathLength });
+gsap.set(activePath, { strokeDasharray: pathLength, strokeDashoffset: pathLength });
 
 function updateCamera(progress) {
-    const svgElement = document.querySelector('.animated-line-container');
-    const svgHeight = svgElement.getBoundingClientRect().height || 6400; 
-    const scaleRatio = svgHeight / 8000; 
-    const drawLength = progress * pathLength;
+    const maxScrollY = 6400 - window.innerHeight;
+    const cameraY = -(progress * maxScrollY);
 
-    gsap.to(path, { strokeDashoffset: pathLength - drawLength, ease: "power2.out", duration: 0.1 });
-    const point = path.getPointAtLength(drawLength);
-    const visualPointY = point.y * scaleRatio;
-    const targetRatioY = progress < 0.05 ? 0.5 + (progress / 0.05) * 0.30 : 0.80;
-    const cameraY = (window.innerHeight * targetRatioY) - visualPointY;
+    const lineProgress = Math.pow(progress, 1.4); 
+    const drawLength = lineProgress * pathLength;
 
-    gsap.to(camera, { x: 0, y: cameraY, ease: "power2.out", duration: 0.5 });
+    // Disegna la traccia
+    gsap.to(activePath, { strokeDashoffset: pathLength - drawLength, ease: "power2.out", duration: 0.1 });
+    
+    // Muove la camera
+    gsap.to(camera, { x: 0, y: cameraY, ease: "none", duration: 0.1 });
 }
-updateCamera(0);
 
 ScrollTrigger.create({
-    trigger: ".scroll-area", start: "top top", end: "bottom bottom", scrub: 1, 
+    trigger: ".scroll-area", start: "top top", end: "bottom bottom", scrub: 0.5, 
     onUpdate: (self) => { updateCamera(self.progress); }
 });
 
 window.addEventListener("resize", () => {
+    const checkMobile = window.innerWidth <= 768;
+    
+    // Se è cambiato il device type (Desktop <-> Mobile), scambiamo la traccia attiva
+    if (checkMobile !== isMobile) {
+        // Resettiamo la vecchia linea
+        gsap.set(activePath, { strokeDashoffset: pathLength }); 
+        
+        // Aggiorniamo le variabili
+        isMobile = checkMobile;
+        activePath = isMobile ? document.querySelector("#animatedLineMobile") : document.querySelector("#animatedLineDesktop");
+        pathLength = activePath.getTotalLength();
+        
+        // Impostiamo la nuova traccia
+        gsap.set(activePath, { strokeDasharray: pathLength });
+    } else {
+        pathLength = activePath.getTotalLength();
+    }
+    
     const st = ScrollTrigger.getAll()[0];
     if(st) updateCamera(st.progress);
 });
 
-// 2. SOCIAL BUTTONS & HOME (Ritorno fluido ad "S")
+
+// 3. SOCIAL BUTTONS & HOME 
 document.querySelector('.home-btn').addEventListener('click', () => {
     lenis.scrollTo(0, { 
         duration: 3.0, 
-        // Questa funzione simula una perfetta curva di Bézier Ease-In-Out
         easing: (t) => t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2
     }); 
 });
@@ -446,53 +535,33 @@ mailButton.addEventListener("click", async (e)=>{
     }catch(err){ tooltip.textContent="Error"; }
 });
 
-// 3. DATABASE DEL CAROSELLO
+
+// 4. DATABASE DEL CAROSELLO
 const portfolioDatabase = {
     "viote": [
         { img: "viote.jpeg", title: "Viote", text: "La foto preview. Breve introduzione al progetto Viote." },
-        { img: "foto2.jpg", title: "Viote - 2", text: "Analisi dei materiali." },
-        { img: "foto3.jpg", title: "Viote - 3", text: "Modellazione 3D e prototipazione." },
-        { img: "foto4.jpg", title: "Viote - 4", text: "Dettagli tecnici." },
-        { img: "foto5.jpg", title: "Viote - 5", text: "Scatti finali del prodotto." }
+        { img: "foto2.jpg", title: "Viote - 2", text: "Analisi dei materiali." }
     ],
     "clivio": [
         { img: "clivio.jpeg", title: "Clivio", text: "Preview di Clivio. Progetto sull'ergonomia." },
-        { img: "foto2.jpg", title: "Clivio - 2", text: "Slide 2..." },
-        { img: "foto3.jpg", title: "Clivio - 3", text: "Slide 3..." },
-        { img: "foto4.jpg", title: "Clivio - 4", text: "Slide 4..." },
-        { img: "foto5.jpg", title: "Clivio - 5", text: "Slide 5..." }
+        { img: "foto2.jpg", title: "Clivio - 2", text: "Slide 2..." }
     ],
     "toori": [
-        { img: "toori.jpeg", title: "Toori", text: "Preview di Toori." },
-        { img: "foto2.jpg", title: "Toori - 2", text: "Slide 2..." },
-        { img: "foto3.jpg", title: "Toori - 3", text: "Slide 3..." },
-        { img: "foto4.jpg", title: "Toori - 4", text: "Slide 4..." },
-        { img: "foto5.jpg", title: "Toori - 5", text: "Slide 5..." }
+        { img: "toori.jpeg", title: "Toori", text: "Preview di Toori." }
     ],
     "cavea": [
-        { img: "cavea.jpg", title: "Cavea", text: "Preview di Cavea." },
-        { img: "foto2.jpg", title: "Cavea - 2", text: "Slide 2..." },
-        { img: "foto3.jpg", title: "Cavea - 3", text: "Slide 3..." },
-        { img: "foto4.jpg", title: "Cavea - 4", text: "Slide 4..." },
-        { img: "foto5.jpg", title: "Cavea - 5", text: "Slide 5..." }
+        { img: "cavea.jpg", title: "Cavea", text: "Preview di Cavea." }
     ],
     "nook": [
-        { img: "prova.jpeg", title: "Nook", text: "Preview di Nook." },
-        { img: "foto2.jpg", title: "Nook - 2", text: "Slide 2..." },
-        { img: "foto3.jpg", title: "Nook - 3", text: "Slide 3..." },
-        { img: "foto4.jpg", title: "Nook - 4", text: "Slide 4..." },
-        { img: "foto5.jpg", title: "Nook - 5", text: "Slide 5..." }
+        { img: "prova.jpeg", title: "Nook", text: "Preview di Nook." }
     ],
     "varkumla": [
-        { img: "varkumla.jpeg", title: "Vårkumla", text: "Preview di Varkumla." },
-        { img: "foto2.jpg", title: "Vårkumla - 2", text: "Slide 2..." },
-        { img: "foto3.jpg", title: "Vårkumla - 3", text: "Slide 3..." },
-        { img: "foto4.jpg", title: "Vårkumla - 4", text: "Slide 4..." },
-        { img: "foto5.jpg", title: "Vårkumla - 5", text: "Slide 5..." }
+        { img: "varkumla.jpeg", title: "Vårkumla", text: "Preview di Varkumla." }
     ]
 };
 
-// 4. LOGICA DEL MODAL E CAROSELLO
+
+// 5. LOGICA DEL MODAL E CAROSELLO
 const modal = document.getElementById('projectModal');
 const modalImg = document.getElementById('modalImg');
 const modalTitle = document.getElementById('modalTitle');
@@ -504,7 +573,7 @@ const btnNext = document.getElementById('modalNext');
 let currentProject = "";
 let currentSlideIndex = 0;
 
-document.querySelectorAll('.photo-box').forEach(box => {
+document.querySelectorAll('.photo-box[data-project]').forEach(box => {
     box.addEventListener('click', () => {
         const projectId = box.getAttribute('data-project');
         if(projectId && portfolioDatabase[projectId]) {
@@ -539,7 +608,8 @@ btnPrev.addEventListener('click', () => {
     updateModalContent();
 });
 
-// 5. ANIMAZIONE TESTO FINALE ("LET'S KEEP IN TOUCH!")
+
+// 6. ANIMAZIONE TESTO FINALE ("LET'S KEEP IN TOUCH!")
 const finalText = document.getElementById('final-text');
 if(finalText) {
     const text = finalText.innerText;
