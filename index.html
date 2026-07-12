@@ -477,7 +477,7 @@ gsap.to(camera, { x: 0, y: cameraY, ease: "power2.out", duration: 0.5 });
 updateCamera(0);
 
 ScrollTrigger.create({
-trigger: ".scroll-area", start: "top top", end: "bottom bottom", scrub: 2, 
+trigger: ".scroll-area", start: "top top", end: "bottom bottom", scrub: 0.5, 
 onUpdate: (self) => { updateCamera(self.progress); }
 });
 
